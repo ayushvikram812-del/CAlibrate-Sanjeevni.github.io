@@ -292,6 +292,14 @@
             color: #00D9FF;
             margin-top: 20px;
             margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .feature-content h3 {
+            color: #00D9FF;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 16px;
         }
 
         .feature-content label {
@@ -348,11 +356,6 @@
             background: rgba(0, 217, 255, 0.05);
         }
 
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
         .btn-small {
             padding: 5px 10px;
             font-size: 12px;
@@ -382,63 +385,6 @@
             gap: 10px;
             justify-content: center;
             margin: 20px 0;
-        }
-
-        .chatbox {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(0, 217, 255, 0.2);
-            border-radius: 15px;
-            padding: 20px;
-            height: 500px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chatbox-messages {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-
-        .message {
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 8px;
-            max-width: 80%;
-        }
-
-        .user-message {
-            background: rgba(0, 217, 255, 0.1);
-            margin-left: auto;
-            border: 1px solid rgba(0, 217, 255, 0.2);
-        }
-
-        .bot-message {
-            background: rgba(123, 97, 255, 0.1);
-            border: 1px solid rgba(123, 97, 255, 0.2);
-        }
-
-        .chatbox-input {
-            display: flex;
-            gap: 10px;
-        }
-
-        .chatbox-input input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid rgba(0, 217, 255, 0.2);
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-            border-radius: 8px;
-        }
-
-        .chatbox-input button {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #00D9FF 0%, #7B61FF 100%);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
         }
 
         .message-notification {
@@ -514,10 +460,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            overflow-y: auto;
         }
 
         .payment-modal.active {
@@ -525,13 +472,14 @@
         }
 
         .payment-modal-content {
-            background: rgba(10, 24, 40, 0.95);
-            border: 2px solid rgba(0, 217, 255, 0.3);
+            background: rgba(10, 24, 40, 0.98);
+            border: 2px solid rgba(0, 217, 255, 0.5);
             border-radius: 15px;
             padding: 40px;
             max-width: 600px;
             width: 90%;
             text-align: center;
+            margin: auto;
         }
 
         .payment-modal-content h2 {
@@ -540,16 +488,19 @@
             font-size: 28px;
         }
 
-        .qr-code {
-            max-width: 300px;
-            margin: 20px auto;
-            padding: 20px;
+        .qr-container {
             background: #fff;
-            border-radius: 10px;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .qr-code img {
-            max-width: 100%;
+        .qr-code-img {
+            max-width: 300px;
+            width: 100%;
             height: auto;
         }
 
@@ -561,6 +512,7 @@
             background: rgba(0, 255, 136, 0.1);
             border-radius: 8px;
             border: 2px solid rgba(0, 255, 136, 0.2);
+            word-break: break-all;
         }
 
         .close-modal {
@@ -573,12 +525,35 @@
             margin-top: 20px;
         }
 
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .syllabus-list {
+            background: rgba(0, 217, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #00D9FF;
+        }
+
+        .syllabus-list ul {
+            list-style-position: inside;
+            margin-left: 10px;
+            line-height: 2;
+        }
+
+        .syllabus-list li {
+            color: #ccc;
+        }
+
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 32px; }
             .btn-large { width: 100%; }
             .dashboard-grid, .stats { grid-template-columns: 1fr; }
             .timer-display { font-size: 36px; }
             .payment-modal-content { padding: 20px; }
+            .qr-code-img { max-width: 200px; }
         }
     </style>
 </head>
@@ -589,7 +564,6 @@
             <div class="nav-buttons">
                 <button class="btn btn-login" onclick="showPage('home')">Home</button>
                 <button class="btn btn-primary" onclick="showPage('login')">Login</button>
-                <button class="btn btn-login" onclick="showPage('adminLogin')">Admin</button>
             </div>
         </div>
     </header>
@@ -598,19 +572,20 @@
     <div id="paymentModal" class="payment-modal">
         <div class="payment-modal-content">
             <h2>Complete Your Payment</h2>
-            <p style="color: #ccc; margin-bottom: 20px;">Scan the QR code or use the UPI ID below</p>
+            <p style="color: #ccc; margin-bottom: 20px;">Scan the QR code below or use the UPI ID</p>
             
-            <div class="qr-code">
-                <img id="qrCodeImage" src="" alt="UPI QR Code" style="max-width: 100%; height: auto;">
+            <div class="qr-container">
+                <img id="qrCodeImage" class="qr-code-img" alt="UPI QR Code">
             </div>
 
             <div class="upi-id">
-                <strong>UPI ID:</strong> 9044621001@ibl
+                <strong>UPI ID:</strong><br>9044621001@ibl
             </div>
 
-            <p style="color: #ccc; margin: 20px 0; font-size: 12px;">
-                ✅ After payment, send screenshot to: CAlibrate.sanjeevni@gmail.com<br>
-                ⏱️ Your subscription will be activated within 1 hour
+            <p style="color: #ccc; margin: 20px 0; font-size: 14px;">
+                ✅ Send payment screenshot to: CAlibrate.sanjeevni@gmail.com<br>
+                ⏱️ Your subscription activates within 1 hour<br>
+                📞 Contact for support: CAlibrate.sanjeevni@gmail.com
             </p>
 
             <button class="close-modal" onclick="closePaymentModal()">Close</button>
@@ -623,9 +598,9 @@
             <div class="hero-content">
                 <h1>Welcome to CAlibrate: Sanjeevni</h1>
                 <p>Your Lifeline to CA Success</p>
-                <p style="font-size: 16px; margin-bottom: 40px;">Master CA curriculum with our complete learning platform</p>
+                <p style="font-size: 16px; margin-bottom: 40px;">Master CA curriculum with intelligent tracking and learning tools</p>
                 <div class="hero-buttons">
-                    <button class="btn btn-primary btn-large" onclick="showPage('signup')">Get Started →</button>
+                    <button class="btn btn-primary btn-large" onclick="showPage('signup')">Get Started</button>
                     <button class="btn btn-login btn-large" onclick="showPage('login')">Login</button>
                 </div>
             </div>
@@ -635,23 +610,23 @@
     <!-- SIGNUP PAGE -->
     <div id="signupPage" class="page">
         <div class="form-container">
-            <h2>Create Your Account</h2>
+            <h2>Create Account</h2>
             <form onsubmit="handleSignup(event)">
                 <div class="form-group">
                     <label>Full Name *</label>
-                    <input type="text" id="fullName" placeholder="Enter your full name" required>
+                    <input type="text" id="fullName" placeholder="Your name" required>
                 </div>
                 <div class="form-group">
-                    <label>Email Address *</label>
-                    <input type="email" id="email" placeholder="Enter your email" required>
+                    <label>Email *</label>
+                    <input type="email" id="email" placeholder="your@email.com" required>
                 </div>
                 <div class="form-group">
-                    <label>Create User ID *</label>
-                    <input type="text" id="userId" placeholder="e.g., ca_ravi123" required>
+                    <label>User ID *</label>
+                    <input type="text" id="userId" placeholder="ca_yourname" required>
                 </div>
                 <div class="form-group">
                     <label>Password *</label>
-                    <input type="password" id="password" placeholder="Enter password" required>
+                    <input type="password" id="password" placeholder="Password" required>
                 </div>
                 <div class="form-group">
                     <label>CA Level *</label>
@@ -673,15 +648,15 @@
     <!-- LOGIN PAGE -->
     <div id="loginPage" class="page">
         <div class="form-container">
-            <h2>Welcome Back</h2>
+            <h2>Login</h2>
             <form onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label>User ID or Email *</label>
-                    <input type="text" id="loginUserId" placeholder="Enter user ID or email" required>
+                    <input type="text" id="loginUserId" placeholder="User ID or email" required>
                 </div>
                 <div class="form-group">
                     <label>Password *</label>
-                    <input type="password" id="loginPassword" placeholder="Enter password" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
                 </div>
                 <div class="form-group">
                     <label>CA Level *</label>
@@ -700,30 +675,6 @@
         </div>
     </div>
 
-    <!-- ADMIN LOGIN PAGE -->
-    <div id="adminLoginPage" class="page">
-        <div class="form-container">
-            <h2>Admin Login</h2>
-            <form onsubmit="handleAdminLogin(event)">
-                <div class="form-group">
-                    <label>Admin Email *</label>
-                    <input type="email" id="adminEmail" placeholder="ayushvikram812@gmail.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Admin Password *</label>
-                    <input type="password" id="adminPassword" placeholder="Enter admin password" required>
-                </div>
-                <div class="form-buttons">
-                    <button type="button" class="btn btn-secondary" onclick="showPage('home')">Back</button>
-                    <button type="submit" class="btn btn-primary">Login</button>
-                </div>
-            </form>
-            <p style="text-align: center; margin-top: 20px; color: #ccc; font-size: 12px;">
-                Demo: ayushvikram812@gmail.com | Admin@123
-            </p>
-        </div>
-    </div>
-
     <!-- DASHBOARD PAGE -->
     <div id="dashboardPage" class="page">
         <div class="container">
@@ -736,27 +687,19 @@
                 <div class="dashboard-grid">
                     <div class="card" onclick="showPage('topics')">
                         <h3>📚 Topic Tracker</h3>
-                        <p>Track topics chapter-wise with tables</p>
+                        <p>Track topics chapter-wise with full syllabus</p>
                     </div>
                     <div class="card" onclick="showPage('timer')">
                         <h3>⏱️ Focus Timer</h3>
-                        <p>Pomodoro timer for study sessions</p>
-                    </div>
-                    <div class="card" onclick="showPage('groups')">
-                        <h3>👥 Study Groups</h3>
-                        <p>Join study groups with peers</p>
+                        <p>Pomodoro study sessions</p>
                     </div>
                     <div class="card" onclick="showPage('chatbot')">
                         <h3>🤖 Sanjeevni Chatbot</h3>
-                        <p>AI chatbot for doubt resolution</p>
-                    </div>
-                    <div class="card" onclick="showPage('badges')">
-                        <h3>🏅 Badges</h3>
-                        <p>Track achievement badges</p>
+                        <p>AI-powered doubt resolution</p>
                     </div>
                     <div class="card" onclick="showPage('payment')">
                         <h3>💳 Subscription</h3>
-                        <p>View subscription plans</p>
+                        <p>Upgrade your membership</p>
                     </div>
                 </div>
 
@@ -772,31 +715,33 @@
         <div class="container">
             <div class="feature-page">
                 <div class="back-button">
-                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back to Dashboard</button>
+                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back</button>
                 </div>
                 <div class="feature-header">
                     <h1>📚 Topic Tracker</h1>
                 </div>
 
                 <div class="feature-content">
-                    <h2>Select Your Subject & Chapter</h2>
+                    <h2>Select Subject & Chapter</h2>
                     
-                    <label>Select Subject:</label>
-                    <select id="subjectSelect" onchange="loadChapters()">
-                        <option value="">Choose Subject...</option>
+                    <label>Subject:</label>
+                    <select id="subjectSelect" onchange="loadChaptersAndSyllabus()">
+                        <option value="">Choose Subject</option>
                     </select>
 
-                    <label>Select Chapter:</label>
+                    <label>Chapter:</label>
                     <select id="chapterSelect" onchange="loadTopics()">
-                        <option value="">Choose Chapter...</option>
+                        <option value="">Choose Chapter</option>
                     </select>
 
-                    <h2>Add New Topic</h2>
+                    <div id="syllabusDisplay"></div>
+
+                    <h2>Add Topic</h2>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                         <input type="text" id="topicName" placeholder="Topic Name">
-                        <input type="text" id="questionNumbers" placeholder="Q. Numbers (e.g., 1-5, 7-10)">
+                        <input type="text" id="questionNumbers" placeholder="Q. Numbers">
                         <select id="classification">
-                            <option value="">Classification...</option>
+                            <option value="">Classification</option>
                             <option value="Most Important">Most Important</option>
                             <option value="Important">Important</option>
                             <option value="Good for Reading">Good for Reading</option>
@@ -805,26 +750,26 @@
                         <button class="btn btn-primary" onclick="addTopic()">Add Topic</button>
                     </div>
 
-                    <h2>Topic List</h2>
-                    <table id="topicTable">
+                    <h2>Topics Added</h2>
+                    <table>
                         <thead>
                             <tr>
-                                <th>S.No</th>
+                                <th>No</th>
                                 <th>Topic</th>
-                                <th>Questions</th>
+                                <th>Q. Numbers</th>
                                 <th>Classification</th>
-                                <th>Revision</th>
-                                <th>Actions</th>
+                                <th>Mark</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody id="topicBody">
                             <tr>
-                                <td colspan="6" style="text-align: center; color: #999;">Select a chapter to add topics</td>
+                                <td colspan="6" style="text-align: center; color: #999;">Select chapter to add topics</td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <h2 style="margin-top: 30px;">Statistics</h2>
+                    <h2 style="margin-top: 30px;">Progress</h2>
                     <div class="stats">
                         <div class="stat-card">
                             <h3 id="totalTopics">0</h3>
@@ -849,7 +794,7 @@
         <div class="container">
             <div class="feature-page">
                 <div class="back-button">
-                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back to Dashboard</button>
+                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back</button>
                 </div>
                 <div class="feature-header">
                     <h1>⏱️ Focus Timer</h1>
@@ -858,9 +803,9 @@
                 <div class="feature-content">
                     <label>Session Type:</label>
                     <select id="sessionType" onchange="updateTimer()">
-                        <option value="study">Study (25 minutes)</option>
-                        <option value="break">Break (5 minutes)</option>
-                        <option value="longbreak">Long Break (15 minutes)</option>
+                        <option value="study">Study (25 min)</option>
+                        <option value="break">Break (5 min)</option>
+                        <option value="longbreak">Long Break (15 min)</option>
                     </select>
 
                     <div class="timer-display" id="timerDisplay">25:00</div>
@@ -871,11 +816,11 @@
                         <button class="btn btn-secondary" onclick="resetTimer()">Reset</button>
                     </div>
 
-                    <h2>Session Stats</h2>
+                    <h2>Statistics</h2>
                     <div class="stats">
                         <div class="stat-card">
                             <h3 id="sessionsCompleted">0</h3>
-                            <p>Sessions Completed</p>
+                            <p>Sessions</p>
                         </div>
                         <div class="stat-card">
                             <h3 id="totalMinutes">0</h3>
@@ -883,54 +828,9 @@
                         </div>
                         <div class="stat-card">
                             <h3 id="currentStreak">0</h3>
-                            <p>Current Streak</p>
+                            <p>Streak</p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- STUDY GROUPS PAGE -->
-    <div id="groupsPage" class="page">
-        <div class="container">
-            <div class="feature-page">
-                <div class="back-button">
-                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back to Dashboard</button>
-                </div>
-                <div class="feature-header">
-                    <h1>👥 Study Groups</h1>
-                </div>
-
-                <div class="feature-content">
-                    <h2>Join Study Groups</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Group Name</th>
-                                <th>Subject</th>
-                                <th>Members</th>
-                                <th>Messages</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Ind AS Concepts</td>
-                                <td>Financial Reporting</td>
-                                <td>24</td>
-                                <td>156</td>
-                                <td><button class="btn-small" onclick="showMessage('✅ Joined group!')">Join</button></td>
-                            </tr>
-                            <tr>
-                                <td>Taxation Discussion</td>
-                                <td>Taxation</td>
-                                <td>18</td>
-                                <td>89</td>
-                                <td><button class="btn-small" onclick="showMessage('✅ Joined group!')">Join</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
@@ -941,55 +841,22 @@
         <div class="container">
             <div class="feature-page">
                 <div class="back-button">
-                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back to Dashboard</button>
+                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back</button>
                 </div>
                 <div class="feature-header">
-                    <h1>🤖 Sanjeevni AI Chatbot</h1>
+                    <h1>🤖 Sanjeevni Chatbot</h1>
                 </div>
 
                 <div class="feature-content">
-                    <div class="chatbox">
-                        <div class="chatbox-messages" id="chatMessages">
-                            <div class="bot-message" style="padding: 10px;">
-                                👋 <strong>Sanjeevni:</strong> Hello! Ask me any CA question in simple language!
-                            </div>
-                        </div>
-                        <div class="chatbox-input">
-                            <input type="text" id="userInput" placeholder="Ask your question..." onkeypress="handleKeyPress(event)">
-                            <button onclick="sendMessage()">Send</button>
+                    <div style="background: rgba(255, 255, 255, 0.03); padding: 20px; border-radius: 8px; height: 400px; overflow-y: auto; margin-bottom: 20px;" id="chatMessages">
+                        <div style="padding: 10px; background: rgba(123, 97, 255, 0.1); border-radius: 8px; margin-bottom: 15px;">
+                            👋 <strong>Sanjeevni:</strong> Hello! Ask me any CA concept question in simple language.
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- BADGES PAGE -->
-    <div id="badgesPage" class="page">
-        <div class="container">
-            <div class="feature-page">
-                <div class="back-button">
-                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back to Dashboard</button>
-                </div>
-                <div class="feature-header">
-                    <h1>🏅 Achievement Badges</h1>
-                </div>
-
-                <div class="feature-content">
-                    <h2>Your Badges (50+ Available)</h2>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-bottom: 30px;">
-                        <div style="text-align: center; padding: 20px; background: rgba(0, 217, 255, 0.05); border-radius: 8px;">
-                            <div style="font-size: 48px; margin-bottom: 10px;">🔥</div>
-                            <p style="color: #00D9FF; font-weight: 600;">Hot Streak</p>
-                        </div>
-                        <div style="text-align: center; padding: 20px; background: rgba(0, 217, 255, 0.05); border-radius: 8px;">
-                            <div style="font-size: 48px; margin-bottom: 10px;">✅</div>
-                            <p style="color: #00D9FF; font-weight: 600;">Chapter Master</p>
-                        </div>
-                        <div style="text-align: center; padding: 20px; background: rgba(0, 217, 255, 0.05); border-radius: 8px;">
-                            <div style="font-size: 48px; margin-bottom: 10px;">⏱️</div>
-                            <p style="color: #00D9FF; font-weight: 600;">Focus Master</p>
-                        </div>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="userInput" placeholder="Ask your question..." style="flex: 1; padding: 10px; border: 1px solid rgba(0, 217, 255, 0.2); background: rgba(255, 255, 255, 0.05); color: #fff; border-radius: 8px;" onkeypress="handleKeyPress(event)">
+                        <button onclick="sendMessage()" class="btn btn-primary">Send</button>
                     </div>
                 </div>
             </div>
@@ -1001,64 +868,35 @@
         <div class="container">
             <div class="feature-page">
                 <div class="back-button">
-                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back to Dashboard</button>
+                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back</button>
                 </div>
                 <div class="feature-header">
                     <h1>💳 Subscription Plans</h1>
                 </div>
 
                 <div class="feature-content">
-                    <h2>30-Day Free Trial Available!</h2>
+                    <h2>30-Day Free Trial</h2>
+                    <p style="color: #ccc; margin-bottom: 20px;">Full access to all features. No credit card required.</p>
 
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                         <div style="background: rgba(0, 217, 255, 0.1); padding: 20px; border-radius: 8px; border: 2px solid rgba(0, 217, 255, 0.2);">
                             <h3 style="color: #00D9FF; margin-bottom: 15px;">Monthly</h3>
                             <p style="font-size: 24px; color: #00FF88; margin-bottom: 10px;"><strong>₹50</strong>/month</p>
-                            <button class="btn btn-primary" style="width: 100%;" onclick="openPaymentModal()">Subscribe</button>
+                            <button class="btn btn-primary" style="width: 100%;" onclick="openPaymentModal()">Subscribe Now</button>
                         </div>
 
                         <div style="background: rgba(0, 217, 255, 0.1); padding: 20px; border-radius: 8px; border: 2px solid #00D9FF;">
-                            <h3 style="color: #00D9FF; margin-bottom: 15px;">3-Month ⭐</h3>
+                            <h3 style="color: #00D9FF; margin-bottom: 15px;">3-Month (Popular)</h3>
                             <p style="font-size: 24px; color: #00FF88; margin-bottom: 10px;"><strong>₹149</strong></p>
-                            <button class="btn btn-primary" style="width: 100%; background: #00FF88; color: #0A1828;" onclick="openPaymentModal()">Subscribe</button>
+                            <button class="btn btn-primary" style="width: 100%; background: #00FF88; color: #0A1828;" onclick="openPaymentModal()">Subscribe Now</button>
                         </div>
 
                         <div style="background: rgba(0, 217, 255, 0.1); padding: 20px; border-radius: 8px; border: 2px solid rgba(0, 217, 255, 0.2);">
-                            <h3 style="color: #00D9FF; margin-bottom: 15px;">Annual</h3>
+                            <h3 style="color: #00D9FF; margin-bottom: 15px;">Annual (Best Value)</h3>
                             <p style="font-size: 24px; color: #00FF88; margin-bottom: 10px;"><strong>₹550</strong></p>
-                            <button class="btn btn-primary" style="width: 100%;" onclick="openPaymentModal()">Subscribe</button>
+                            <button class="btn btn-primary" style="width: 100%;" onclick="openPaymentModal()">Subscribe Now</button>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ADMIN DASHBOARD -->
-    <div id="adminDashboardPage" class="page">
-        <div class="container">
-            <div class="dashboard">
-                <div class="dashboard-header">
-                    <h1>Admin Dashboard</h1>
-                </div>
-
-                <div class="stats">
-                    <div class="stat-card">
-                        <h3>127</h3>
-                        <p>Total Students</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>₹12,450</h3>
-                        <p>Revenue This Month</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>82</h3>
-                        <p>Paid Subscribers</p>
-                    </div>
-                </div>
-
-                <div style="text-align: center; margin-top: 40px;">
-                    <button class="btn btn-login" onclick="handleAdminLogout()">Logout</button>
                 </div>
             </div>
         </div>
@@ -1066,127 +904,144 @@
 
     <!-- FOOTER -->
     <footer>
-        <div class="footer-links">
-            <a onclick="showPage('home')">Home</a>
-            <a href="mailto:CAlibrate.sanjeevni@gmail.com">Contact</a>
-        </div>
-        <p>CAlibrate: Sanjeevni © 2025</p>
-        <p style="margin-top: 10px; font-size: 12px;">📧 CAlibrate.sanjeevni@gmail.com | 💳 UPI: 9044621001@ibl</p>
+        <p>CAlibrate: Sanjeevni © 2025 | Your Lifeline to CA Success</p>
+        <p style="margin-top: 10px; font-size: 12px;">📧 CAlibrate.sanjeevni@gmail.com</p>
     </footer>
 
     <script>
-        // Complete curriculum data for all levels
+        // COMPLETE CURRICULUM WITH DETAILED SYLLABUS
         const curriculumData = {
             Foundation: {
-                'Accounting': [
-                    'Chapter 1: Introduction to Accounting',
-                    'Chapter 2: Journal Entries',
-                    'Chapter 3: Ledger',
-                    'Chapter 4: Trial Balance',
-                    'Chapter 5: Bank Reconciliation',
-                    'Chapter 6: Financial Statements'
-                ],
-                'Business Law': [
-                    'Chapter 1: Contract Act',
-                    'Chapter 2: Sale of Goods Act',
-                    'Chapter 3: Indian Partnership Act',
-                    'Chapter 4: Companies Act'
-                ],
-                'Business Mathematics': [
-                    'Chapter 1: Algebra',
-                    'Chapter 2: Calculus',
-                    'Chapter 3: Statistics',
-                    'Chapter 4: Probability'
-                ]
+                'Accounting': {
+                    chapters: [
+                        'Recording Business Transactions',
+                        'Classifying Business Transactions',
+                        'Recording in Books of Accounts - Journals',
+                        'Recording in Books of Accounts - Ledger',
+                        'Trial Balance',
+                        'Bank Reconciliation',
+                        'Financial Statements'
+                    ],
+                    syllabus: '• Double Entry System\n• Journal entries for various transactions\n• Ledger posting and balancing\n• Trial Balance concepts\n• Bank reconciliation procedures\n• Preparation of financial statements (P&L, Balance Sheet)'
+                },
+                'Business Law': {
+                    chapters: [
+                        'Introduction to Law',
+                        'Contract Act - Formation',
+                        'Contract Act - Terms & Conditions',
+                        'Sale of Goods Act',
+                        'Partnership Act - Formation',
+                        'Partnership Act - Liabilities'
+                    ],
+                    syllabus: '• Nature and scope of law\n• Essential elements of contract\n• Breach of contract and remedies\n• Essentials of sale\n• Rights of buyer and seller\n• Formation of partnership\n• Rights and duties of partners'
+                },
+                'Business Mathematics': {
+                    chapters: [
+                        'Algebra Basics',
+                        'Quadratic Equations',
+                        'Permutations & Combinations',
+                        'Probability Theory',
+                        'Calculus - Differential',
+                        'Calculus - Integral',
+                        'Financial Mathematics'
+                    ],
+                    syllabus: '• Algebraic equations and inequalities\n• Quadratic functions\n• Permutations and combinations formulas\n• Probability concepts\n• Differentiation techniques\n• Integration methods\n• Simple and compound interest'
+                }
             },
             Intermediate: {
-                'Accounting': [
-                    'Chapter 1: Bank Reconciliation',
-                    'Chapter 2: Depreciation',
-                    'Chapter 3: Provision & Reserves',
-                    'Chapter 4: Accounts from Incomplete Records',
-                    'Chapter 5: Consolidation of Accounts',
-                    'Chapter 6: Investment Accounts'
-                ],
-                'Taxation': [
-                    'Chapter 1: Income Tax - Basic',
-                    'Chapter 2: Computation of Income',
-                    'Chapter 3: Income from Salary',
-                    'Chapter 4: Income from House Property',
-                    'Chapter 5: Income from Business',
-                    'Chapter 6: GST Fundamentals'
-                ],
-                'Cost Accounting': [
-                    'Chapter 1: Introduction to Costing',
-                    'Chapter 2: Material Costing',
-                    'Chapter 3: Labor Costing',
-                    'Chapter 4: Overhead Costing'
-                ]
+                'Accounting': {
+                    chapters: [
+                        'Depreciation and Amortization',
+                        'Provisions and Reserves',
+                        'Contingent Liabilities',
+                        'Accounts from Incomplete Records',
+                        'Consolidation of Accounts',
+                        'Investment Accounts',
+                        'Accounting for Special Transactions'
+                    ],
+                    syllabus: '• Depreciation methods (Straight-line, WDV)\n• Provision vs Reserve\n• Contingent liabilities treatment\n• Single entry system conversion\n• Preparation of final accounts from trial balance\n• Investment account preparation\n• Treatment of special items'
+                },
+                'Taxation': {
+                    chapters: [
+                        'Income Tax - Basics',
+                        'Income from Salary',
+                        'Income from House Property',
+                        'Income from Business',
+                        'Income from Capital Gains',
+                        'Income from Other Sources',
+                        'Deductions from Gross Total Income',
+                        'Basics of GST'
+                    ],
+                    syllabus: '• Previous year vs Assessment year\n• Residential status\n• Salary computation\n• House property treatment\n• Business profit calculation\n• Capital gains classification\n• Various deductions under Chapter VIA\n• GST rates and input tax credit'
+                },
+                'Cost Accounting': {
+                    chapters: [
+                        'Introduction to Costing',
+                        'Material Costing',
+                        'Labor Costing',
+                        'Overhead Costing',
+                        'Cost Allocation',
+                        'Break-even Analysis',
+                        'Marginal Costing'
+                    ],
+                    syllabus: '• Costing terminology\n• Material valuation methods (FIFO, LIFO, Weighted Average)\n• Labor cost accounting\n• Fixed and variable overhead\n• Cost allocation methods\n• Break-even point calculation\n• Contribution margin analysis'
+                }
             },
             Final: {
-                'Auditing & Assurance': [
-                    'Chapter 1: Auditing Standards',
-                    'Chapter 2: Planning & Risk Assessment',
-                    'Chapter 3: Audit Procedures',
-                    'Chapter 4: Materiality',
-                    'Chapter 5: Evidence & Testing',
-                    'Chapter 6: Audit Reporting',
-                    'Chapter 7: Special Audits'
-                ],
-                'Financial Reporting (34 Ind AS)': [
-                    'Ind AS 1: Presentation',
-                    'Ind AS 2: Inventories',
-                    'Ind AS 3: Business Combinations',
-                    'Ind AS 4: Contingent Liabilities',
-                    'Ind AS 5: Non-Current Assets',
-                    'Ind AS 6: Exploration for Minerals',
-                    'Ind AS 7: Statement of Cash Flows',
-                    'Ind AS 8: Accounting Policies',
-                    'Ind AS 9: Revenue from Contracts',
-                    'Ind AS 10: Events After Balance',
-                    'Ind AS 11: Construction Contracts',
-                    'Ind AS 12: Income Taxes',
-                    'Ind AS 13: Leases',
-                    'Ind AS 14: Regulatory Deferral',
-                    'Ind AS 15: Employment Benefits',
-                    'Ind AS 16: Property Plant Equipment',
-                    'Ind AS 17: Leases',
-                    'Ind AS 18: Revenue',
-                    'Ind AS 19: Employee Benefits',
-                    'Ind AS 20: Accounting for Govt Grants',
-                    'Ind AS 21: Foreign Currency',
-                    'Ind AS 23: Borrowing Costs',
-                    'Ind AS 24: Related Party Disclosures',
-                    'Ind AS 27: Separate FS',
-                    'Ind AS 28: Investments in Associates',
-                    'Ind AS 29: Investments in JVs',
-                    'Ind AS 32: Financial Instruments',
-                    'Ind AS 33: Earnings Per Share',
-                    'Ind AS 34: Interim FS',
-                    'Ind AS 36: Impairment',
-                    'Ind AS 37: Provisions',
-                    'Ind AS 38: Intangible Assets',
-                    'Ind AS 40: Investment Property',
-                    'Ind AS 41: Biological Assets'
-                ],
-                'Direct Taxation': [
-                    'Chapter 1: Income Tax - Advanced',
-                    'Chapter 2: Income from Various Sources',
-                    'Chapter 3: Deductions & Exemptions',
-                    'Chapter 4: Capital Gains',
-                    'Chapter 5: Set-off & Relief',
-                    'Chapter 6: Transfer Pricing',
-                    'Chapter 7: International Tax'
-                ],
-                'Corporate Law': [
-                    'Chapter 1: Companies Act Provisions',
-                    'Chapter 2: Directors & Management',
-                    'Chapter 3: Share Capital',
-                    'Chapter 4: Meetings & Resolutions',
-                    'Chapter 5: Accounts & Audits',
-                    'Chapter 6: Winding Up',
-                    'Chapter 7: Regulatory Compliance'
-                ]
+                'Auditing & Assurance': {
+                    chapters: [
+                        'Auditing Standards (SAs)',
+                        'Planning and Risk Assessment',
+                        'Audit Evidence',
+                        'Materiality and Audit',
+                        'Internal Controls',
+                        'Testing and Procedures',
+                        'Audit Reporting',
+                        'Special Audit Areas'
+                    ],
+                    syllabus: '• SA 200 to SA 700 standards\n• Risk of material misstatement\n• Audit procedures and techniques\n• Materiality threshold determination\n• Internal control evaluation\n• Sampling methods\n• Audit reports formats\n• Related party transactions audit'
+                },
+                'Financial Reporting (Ind AS)': {
+                    chapters: [
+                        'Ind AS 1 - Presentation of Financial Statements',
+                        'Ind AS 2 - Inventories',
+                        'Ind AS 8 - Accounting Policies',
+                        'Ind AS 10 - Events After Reporting Date',
+                        'Ind AS 16 - Property, Plant & Equipment',
+                        'Ind AS 18 - Revenue from Contracts',
+                        'Ind AS 37 - Provisions, Contingent Liabilities',
+                        'Ind AS 36 - Impairment of Assets',
+                        'Ind AS 32 - Financial Instruments - Presentation',
+                        'Ind AS 109 - Financial Instruments - Recognition'
+                    ],
+                    syllabus: '• Conceptual framework\n• Recognition and measurement criteria\n• Presentation requirements\n• Disclosure standards\n• Transition provisions\n• Impact of Ind AS adoption\n• Specific treatment for each standard'
+                },
+                'Direct Taxation': {
+                    chapters: [
+                        'Income Tax - Advanced Concepts',
+                        'Residential Status & Scope',
+                        'Computation of Income',
+                        'Deductions and Exemptions',
+                        'Capital Gains Taxation',
+                        'Loss and Set-off',
+                        'Transfer Pricing',
+                        'International Taxation Aspects'
+                    ],
+                    syllabus: '• Residential status determination\n• Global income concept\n• Salary income complex issues\n• Business income adjustments\n• Capital gains indexation\n• Loss carry forward/backward\n• TP mechanism and documentation\n• DTAA provisions'
+                },
+                'Corporate Law': {
+                    chapters: [
+                        'Companies Act - Governance',
+                        'Directors and Management',
+                        'Share Capital Transactions',
+                        'Meetings and Resolutions',
+                        'Accounts and Audit',
+                        'Borrowing and Debentures',
+                        'Winding Up',
+                        'Regulatory Compliance'
+                    ],
+                    syllabus: '• Board constitution and powers\n• Directors duties and liabilities\n• Share issuance and buyback\n• Board and General meetings\n• Financial statements filing\n• Statutory audit requirements\n• Voluntary and compulsory winding up\n• MCA compliance requirements'
+                }
             }
         };
 
@@ -1194,6 +1049,7 @@
         let timeLeft = 1500;
         let topicsData = {};
         let currentChapter = '';
+        let currentSubject = '';
 
         function showPage(pageName) {
             const pages = document.querySelectorAll('.page');
@@ -1208,8 +1064,8 @@
             const userId = document.getElementById('userId').value;
             const level = document.getElementById('level').value;
 
-            localStorage.setItem('currentStudent', JSON.stringify({fullName, userId, level, joinDate: new Date().toLocaleDateString()}));
-            showMessage('✅ Account created! Logging in...');
+            localStorage.setItem('currentStudent', JSON.stringify({fullName, userId, level}));
+            showMessage('✅ Account created!');
             setTimeout(() => {
                 document.getElementById('loginUserId').value = userId;
                 handleLogin(new Event('submit'));
@@ -1225,28 +1081,9 @@
             setTimeout(() => { showPage('dashboard'); setGreeting(); }, 800);
         }
 
-        function handleAdminLogin(event) {
-            event.preventDefault();
-            const email = document.getElementById('adminEmail').value;
-            const password = document.getElementById('adminPassword').value;
-            if (email === 'ayushvikram812@gmail.com' && password === 'Admin@123') {
-                localStorage.setItem('isAdmin', 'true');
-                showMessage('✅ Admin login successful!');
-                setTimeout(() => { showPage('adminDashboard'); }, 800);
-            } else {
-                showMessage('❌ Invalid credentials');
-            }
-        }
-
         function handleLogout() {
             localStorage.removeItem('currentStudent');
             showMessage('👋 Logged out!');
-            setTimeout(() => { showPage('home'); }, 800);
-        }
-
-        function handleAdminLogout() {
-            localStorage.removeItem('isAdmin');
-            showMessage('👋 Admin logged out!');
             setTimeout(() => { showPage('home'); }, 800);
         }
 
@@ -1254,10 +1091,10 @@
             const student = JSON.parse(localStorage.getItem('currentStudent'));
             if (student) {
                 document.getElementById('studentName').textContent = student.fullName;
+                populateSubjects();
                 const hour = new Date().getHours();
                 let greeting = hour < 12 ? '🌅 Good Morning!' : hour < 17 ? '🌤️ Good Afternoon!' : hour < 21 ? '🌆 Good Evening!' : '🌙 Good Night!';
-                document.getElementById('greetingMessage').textContent = greeting + ' Ready to master CA?';
-                populateSubjects();
+                document.getElementById('greetingMessage').textContent = greeting;
             }
         }
 
@@ -1265,29 +1102,42 @@
             const student = JSON.parse(localStorage.getItem('currentStudent'));
             const subjectSelect = document.getElementById('subjectSelect');
             const level = student.level;
-            subjectSelect.innerHTML = '<option value="">Choose Subject...</option>';
+            subjectSelect.innerHTML = '<option value="">Choose Subject</option>';
             
             if (curriculumData[level]) {
                 Object.keys(curriculumData[level]).forEach(subject => {
                     const option = document.createElement('option');
                     option.value = subject;
-                    option.text = subject;
+                    option.text = subject + ` (${curriculumData[level][subject].chapters.length} chapters)`;
                     subjectSelect.appendChild(option);
                 });
             }
         }
 
-        function loadChapters() {
+        function loadChaptersAndSyllabus() {
             const student = JSON.parse(localStorage.getItem('currentStudent'));
             const subject = document.getElementById('subjectSelect').value;
             const chapterSelect = document.getElementById('chapterSelect');
-            chapterSelect.innerHTML = '<option value="">Choose Chapter...</option>';
+            const syllabusDisplay = document.getElementById('syllabusDisplay');
+            
+            chapterSelect.innerHTML = '<option value="">Choose Chapter</option>';
+            syllabusDisplay.innerHTML = '';
             
             if (subject && curriculumData[student.level][subject]) {
-                curriculumData[student.level][subject].forEach(chapter => {
+                currentSubject = subject;
+                const subjectData = curriculumData[student.level][subject];
+                
+                // Show syllabus
+                syllabusDisplay.innerHTML = `<div class="syllabus-list">
+                    <h3 style="color: #00D9FF; margin-bottom: 10px;">📖 Syllabus for ${subject}</h3>
+                    <p style="white-space: pre-wrap; color: #ccc;">${subjectData.syllabus}</p>
+                </div>`;
+                
+                // Load chapters
+                subjectData.chapters.forEach((chapter, i) => {
                     const option = document.createElement('option');
                     option.value = chapter;
-                    option.text = chapter;
+                    option.text = `${i+1}. ${chapter}`;
                     chapterSelect.appendChild(option);
                 });
             }
@@ -1301,7 +1151,7 @@
         }
 
         function addTopic() {
-            if (!currentChapter) { showMessage('❌ Please select a chapter'); return; }
+            if (!currentChapter) { showMessage('❌ Select chapter'); return; }
             const name = document.getElementById('topicName').value;
             const questions = document.getElementById('questionNumbers').value;
             const classification = document.getElementById('classification').value;
@@ -1320,20 +1170,13 @@
             tbody.innerHTML = '';
             const topics = topicsData[currentChapter] || [];
             if (topics.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #999;">No topics added yet</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No topics yet</td></tr>';
                 return;
             }
 
             topics.forEach((t, i) => {
                 const row = tbody.insertRow();
-                row.innerHTML = `
-                    <td>${i + 1}</td>
-                    <td>${t.name}</td>
-                    <td>${t.questions}</td>
-                    <td>${t.classification}</td>
-                    <td><input type="checkbox" ${t.revision ? 'checked' : ''} onchange="toggleRevision(${i})"></td>
-                    <td><button class="btn-small" onclick="deleteTopic(${i})">Delete</button></td>
-                `;
+                row.innerHTML = `<td>${i+1}</td><td>${t.name}</td><td>${t.questions}</td><td>${t.classification}</td><td><input type="checkbox" ${t.revision ? 'checked' : ''} onchange="toggleRevision(${i})"></td><td><button class="btn-small" onclick="deleteTopic(${i})">Delete</button></td>`;
             });
 
             document.getElementById('totalTopics').textContent = topics.length;
@@ -1353,9 +1196,7 @@
 
         function updateTimer() {
             const type = document.getElementById('sessionType').value;
-            if (type === 'study') timeLeft = 1500;
-            else if (type === 'break') timeLeft = 300;
-            else timeLeft = 900;
+            timeLeft = type === 'study' ? 1500 : type === 'break' ? 300 : 900;
             displayTime();
         }
 
@@ -1380,10 +1221,7 @@
         }
 
         function pauseTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
+            if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
         }
 
         function resetTimer() {
@@ -1397,13 +1235,13 @@
 
             const chatMessages = document.getElementById('chatMessages');
             const userMsg = document.createElement('div');
-            userMsg.className = 'user-message';
+            userMsg.style.cssText = 'padding: 10px; background: rgba(0, 217, 255, 0.1); border-radius: 8px; margin-bottom: 15px;';
             userMsg.innerHTML = `<strong>You:</strong> ${input}`;
             chatMessages.appendChild(userMsg);
 
             setTimeout(() => {
                 const botMsg = document.createElement('div');
-                botMsg.className = 'bot-message';
+                botMsg.style.cssText = 'padding: 10px; background: rgba(123, 97, 255, 0.1); border-radius: 8px; margin-bottom: 15px;';
                 const response = generateAIResponse(input);
                 botMsg.innerHTML = `<strong>Sanjeevni:</strong> ${response}`;
                 chatMessages.appendChild(botMsg);
@@ -1421,27 +1259,28 @@
         function generateAIResponse(question) {
             const lower = question.toLowerCase();
             const responses = {
-                'revenue': 'Revenue is recognized when control of goods/services transfers to customer',
-                'depreciation': 'Depreciation = (Asset Cost - Salvage Value) / Useful Life',
-                'audit': 'Auditing is systematic examination of financial statements',
-                'gst': 'GST is Goods and Services Tax, currently 5%-28% depending on goods/services',
-                'balance sheet': 'Balance Sheet shows assets, liabilities, and equity at a specific date',
-                'profit loss': 'P&L statement shows revenue, expenses, and net profit/loss for a period'
+                'revenue': 'Revenue under Ind AS 115 is recognized when control of promised goods/services is transferred to customer. Recognition happens at point of sale or over time depending on performance obligation.',
+                'depreciation': 'Depreciation = (Cost - Salvage Value) / Useful Life. Straight-line spreads evenly. Written Down Value (WDV) method depreciates on reducing balance.',
+                'audit': 'Auditing is systematic examination of financial statements to form opinion on fair presentation. Auditor gathers sufficient evidence through various audit procedures.',
+                'gst': 'GST rates: 5% (essentials), 12% (common goods), 18% (regular items), 28% (luxury). Input tax credit allowed for business purchases.',
+                'ind as': 'Ind AS are Indian Accounting Standards converged with IFRS. All 34 standards cover recognition, measurement, and disclosure requirements.',
+                'provision': 'Provision is recognized when: (1) Present obligation exists (2) Probable outflow (3) Reliable estimate possible. Example: Warranty provisions, bonus provisions.'
             };
 
             for (let key in responses) {
                 if (lower.includes(key)) return responses[key];
             }
-
-            return 'That is a great CA concept! Break it into parts: 1) Identify core principle 2) Understand rules 3) Practice examples. Would you like me to explain further?';
+            return 'Great question! In CA studies, understand the core principle first, then apply rules with examples. Would you like me to explain any specific aspect further?';
         }
 
         function openPaymentModal() {
-            document.getElementById('paymentModal').classList.add('active');
-            // Note: In production, load QR code image from your server
             const qrCodeImage = document.getElementById('qrCodeImage');
-            // Using a placeholder - replace with actual QR code image
-            qrCodeImage.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"%3E%3Crect fill="white" width="200" height="200"/%3E%3Ctext x="50" y="100" font-size="14" fill="black"%3EQR CODE%3C/text%3E%3C/svg%3E';
+            // Using your UPI QR code - in production, use actual QR code image URL
+            // For now, creating a placeholder that shows the UPI link
+            qrCodeImage.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+            // Note: Replace with actual QR code image URL from your server
+            // Example: qrCodeImage.src = 'https://yourserver.com/qrcodes/9044621001@ibl.png';
+            document.getElementById('paymentModal').classList.add('active');
         }
 
         function closePaymentModal() {
@@ -1458,9 +1297,7 @@
 
         window.addEventListener('load', () => {
             const student = localStorage.getItem('currentStudent');
-            const isAdmin = localStorage.getItem('isAdmin');
-            if (isAdmin) showPage('adminDashboard');
-            else if (student) { showPage('dashboard'); setGreeting(); }
+            if (student) { showPage('dashboard'); setGreeting(); }
         });
     </script>
 </body>
