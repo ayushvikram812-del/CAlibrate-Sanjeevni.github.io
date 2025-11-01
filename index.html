@@ -507,11 +507,78 @@
             font-size: 14px;
         }
 
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .payment-modal.active {
+            display: flex;
+        }
+
+        .payment-modal-content {
+            background: rgba(10, 24, 40, 0.95);
+            border: 2px solid rgba(0, 217, 255, 0.3);
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .payment-modal-content h2 {
+            color: #00D9FF;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .qr-code {
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+        }
+
+        .qr-code img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .upi-id {
+            font-size: 20px;
+            color: #00FF88;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 8px;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .close-modal {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 32px; }
             .btn-large { width: 100%; }
             .dashboard-grid, .stats { grid-template-columns: 1fr; }
             .timer-display { font-size: 36px; }
+            .payment-modal-content { padding: 20px; }
         }
     </style>
 </head>
@@ -526,6 +593,29 @@
             </div>
         </div>
     </header>
+
+    <!-- PAYMENT MODAL -->
+    <div id="paymentModal" class="payment-modal">
+        <div class="payment-modal-content">
+            <h2>Complete Your Payment</h2>
+            <p style="color: #ccc; margin-bottom: 20px;">Scan the QR code or use the UPI ID below</p>
+            
+            <div class="qr-code">
+                <img id="qrCodeImage" src="" alt="UPI QR Code" style="max-width: 100%; height: auto;">
+            </div>
+
+            <div class="upi-id">
+                <strong>UPI ID:</strong> 9044621001@ibl
+            </div>
+
+            <p style="color: #ccc; margin: 20px 0; font-size: 12px;">
+                ✅ After payment, send screenshot to: CAlibrate.sanjeevni@gmail.com<br>
+                ⏱️ Your subscription will be activated within 1 hour
+            </p>
+
+            <button class="close-modal" onclick="closePaymentModal()">Close</button>
+        </div>
+    </div>
 
     <!-- HOME PAGE -->
     <div id="homePage" class="page active">
@@ -646,23 +736,23 @@
                 <div class="dashboard-grid">
                     <div class="card" onclick="showPage('topics')">
                         <h3>📚 Topic Tracker</h3>
-                        <p>Track topics chapter-wise with tables and statistics</p>
+                        <p>Track topics chapter-wise with tables</p>
                     </div>
                     <div class="card" onclick="showPage('timer')">
                         <h3>⏱️ Focus Timer</h3>
-                        <p>Pomodoro timer for focused study sessions</p>
+                        <p>Pomodoro timer for study sessions</p>
                     </div>
                     <div class="card" onclick="showPage('groups')">
                         <h3>👥 Study Groups</h3>
-                        <p>Join and participate in study groups</p>
+                        <p>Join study groups with peers</p>
                     </div>
                     <div class="card" onclick="showPage('chatbot')">
                         <h3>🤖 Sanjeevni Chatbot</h3>
-                        <p>AI chatbot for instant doubt resolution</p>
+                        <p>AI chatbot for doubt resolution</p>
                     </div>
                     <div class="card" onclick="showPage('badges')">
                         <h3>🏅 Badges</h3>
-                        <p>Earn and track achievement badges</p>
+                        <p>Track achievement badges</p>
                     </div>
                     <div class="card" onclick="showPage('payment')">
                         <h3>💳 Subscription</h3>
@@ -694,10 +784,6 @@
                     <label>Select Subject:</label>
                     <select id="subjectSelect" onchange="loadChapters()">
                         <option value="">Choose Subject...</option>
-                        <option value="financial_reporting">Financial Reporting (34 Ind AS)</option>
-                        <option value="taxation">Taxation</option>
-                        <option value="auditing">Auditing</option>
-                        <option value="accounting">Accounting Standards</option>
                     </select>
 
                     <label>Select Chapter:</label>
@@ -767,7 +853,6 @@
                 </div>
                 <div class="feature-header">
                     <h1>⏱️ Focus Timer</h1>
-                    <p style="color: #ccc;">Pomodoro Technique - 25 min Study + 5 min Break</p>
                 </div>
 
                 <div class="feature-content">
@@ -819,7 +904,6 @@
 
                 <div class="feature-content">
                     <h2>Join Study Groups</h2>
-                    
                     <table>
                         <thead>
                             <tr>
@@ -845,21 +929,8 @@
                                 <td>89</td>
                                 <td><button class="btn-small" onclick="showMessage('✅ Joined group!')">Join</button></td>
                             </tr>
-                            <tr>
-                                <td>Auditing Tips</td>
-                                <td>Auditing</td>
-                                <td>15</td>
-                                <td>67</td>
-                                <td><button class="btn-small" onclick="showMessage('✅ Joined group!')">Join</button></td>
-                            </tr>
                         </tbody>
                     </table>
-
-                    <h2 style="margin-top: 30px;">My Groups</h2>
-                    <div style="background: rgba(0, 217, 255, 0.05); padding: 20px; border-radius: 8px; border: 1px solid rgba(0, 217, 255, 0.2);">
-                        <p>You are a member of <strong id="myGroupsCount">0</strong> study groups</p>
-                        <p style="margin-top: 10px; color: #999;">Click "Join" on any group above to start collaborating!</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -874,28 +945,19 @@
                 </div>
                 <div class="feature-header">
                     <h1>🤖 Sanjeevni AI Chatbot</h1>
-                    <p style="color: #ccc;">Ask any CA concept question in simple language</p>
                 </div>
 
                 <div class="feature-content">
                     <div class="chatbox">
                         <div class="chatbox-messages" id="chatMessages">
                             <div class="bot-message" style="padding: 10px;">
-                                👋 <strong>Sanjeevni:</strong> Hello! I'm your AI tutor. Ask me anything about CA concepts - revenue recognition, depreciation, tax calculations, auditing procedures, or any other topic. I'll explain in simple language!
+                                👋 <strong>Sanjeevni:</strong> Hello! Ask me any CA question in simple language!
                             </div>
                         </div>
                         <div class="chatbox-input">
-                            <input type="text" id="userInput" placeholder="Ask your question here..." onkeypress="handleKeyPress(event)">
+                            <input type="text" id="userInput" placeholder="Ask your question..." onkeypress="handleKeyPress(event)">
                             <button onclick="sendMessage()">Send</button>
                         </div>
-                    </div>
-
-                    <h2 style="margin-top: 30px;">Sample Questions:</h2>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                        <button class="btn btn-login" onclick="askQuestion('What is revenue recognition under Ind AS 115?')">Revenue Recognition</button>
-                        <button class="btn btn-login" onclick="askQuestion('How to calculate depreciation under Ind AS 16?')">Depreciation Calculation</button>
-                        <button class="btn btn-login" onclick="askQuestion('What are the types of audit procedures?')">Audit Procedures</button>
-                        <button class="btn btn-login" onclick="askQuestion('Explain GST tax calculation with example')">GST Calculation</button>
                     </div>
                 </div>
             </div>
@@ -914,68 +976,21 @@
                 </div>
 
                 <div class="feature-content">
-                    <h2>Your Badges</h2>
+                    <h2>Your Badges (50+ Available)</h2>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-bottom: 30px;">
                         <div style="text-align: center; padding: 20px; background: rgba(0, 217, 255, 0.05); border-radius: 8px;">
                             <div style="font-size: 48px; margin-bottom: 10px;">🔥</div>
                             <p style="color: #00D9FF; font-weight: 600;">Hot Streak</p>
-                            <p style="font-size: 12px; color: #999;">7 days</p>
                         </div>
                         <div style="text-align: center; padding: 20px; background: rgba(0, 217, 255, 0.05); border-radius: 8px;">
                             <div style="font-size: 48px; margin-bottom: 10px;">✅</div>
                             <p style="color: #00D9FF; font-weight: 600;">Chapter Master</p>
-                            <p style="font-size: 12px; color: #999;">5 chapters</p>
                         </div>
-                        <div style="text-align: center; padding: 20px; background: rgba(0, 217, 255, 0.05); border-rgba: 8px;">
+                        <div style="text-align: center; padding: 20px; background: rgba(0, 217, 255, 0.05); border-radius: 8px;">
                             <div style="font-size: 48px; margin-bottom: 10px;">⏱️</div>
                             <p style="color: #00D9FF; font-weight: 600;">Focus Master</p>
-                            <p style="font-size: 12px; color: #999;">50 sessions</p>
                         </div>
                     </div>
-
-                    <h2>All Available Badges (50+)</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Badge</th>
-                                <th>Name</th>
-                                <th>Requirement</th>
-                                <th>Reward</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>🔥</td>
-                                <td>Hot Streak</td>
-                                <td>7 consecutive days of studying</td>
-                                <td>50 XP</td>
-                            </tr>
-                            <tr>
-                                <td>✅</td>
-                                <td>Chapter Master</td>
-                                <td>Complete entire chapter</td>
-                                <td>100 XP</td>
-                            </tr>
-                            <tr>
-                                <td>⏱️</td>
-                                <td>Focus Master</td>
-                                <td>Complete 100 focus sessions</td>
-                                <td>150 XP</td>
-                            </tr>
-                            <tr>
-                                <td>💬</td>
-                                <td>Community Helper</td>
-                                <td>Help 10 peers</td>
-                                <td>100 XP</td>
-                            </tr>
-                            <tr>
-                                <td>🎓</td>
-                                <td>Level Complete</td>
-                                <td>Finish entire CA level</td>
-                                <td>500 XP</td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
@@ -994,92 +1009,25 @@
 
                 <div class="feature-content">
                     <h2>30-Day Free Trial Available!</h2>
-                    <p style="margin-bottom: 30px;">All new students get unlimited access for 30 days. No credit card required.</p>
 
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                         <div style="background: rgba(0, 217, 255, 0.1); padding: 20px; border-radius: 8px; border: 2px solid rgba(0, 217, 255, 0.2);">
                             <h3 style="color: #00D9FF; margin-bottom: 15px;">Monthly</h3>
                             <p style="font-size: 24px; color: #00FF88; margin-bottom: 10px;"><strong>₹50</strong>/month</p>
-                            <p style="color: #ccc; margin-bottom: 20px;">Best for trying out</p>
-                            <button class="btn btn-primary" style="width: 100%;" onclick="showMessage('✅ Payment initiated!')">Subscribe</button>
+                            <button class="btn btn-primary" style="width: 100%;" onclick="openPaymentModal()">Subscribe</button>
                         </div>
 
                         <div style="background: rgba(0, 217, 255, 0.1); padding: 20px; border-radius: 8px; border: 2px solid #00D9FF;">
-                            <h3 style="color: #00D9FF; margin-bottom: 15px;">3-Month (Popular) ⭐</h3>
-                            <p style="font-size: 24px; color: #00FF88; margin-bottom: 10px;"><strong>₹149</strong> (₹50/m)</p>
-                            <p style="color: #ccc; margin-bottom: 20px;">Most popular choice</p>
-                            <button class="btn btn-primary" style="width: 100%; background: #00FF88; color: #0A1828;" onclick="showMessage('✅ Payment initiated!')">Subscribe</button>
+                            <h3 style="color: #00D9FF; margin-bottom: 15px;">3-Month ⭐</h3>
+                            <p style="font-size: 24px; color: #00FF88; margin-bottom: 10px;"><strong>₹149</strong></p>
+                            <button class="btn btn-primary" style="width: 100%; background: #00FF88; color: #0A1828;" onclick="openPaymentModal()">Subscribe</button>
                         </div>
 
                         <div style="background: rgba(0, 217, 255, 0.1); padding: 20px; border-radius: 8px; border: 2px solid rgba(0, 217, 255, 0.2);">
-                            <h3 style="color: #00D9FF; margin-bottom: 15px;">Annual (Best Value)</h3>
-                            <p style="font-size: 24px; color: #00FF88; margin-bottom: 10px;"><strong>₹550</strong> (₹46/m)</p>
-                            <p style="color: #ccc; margin-bottom: 20px;">Save ₹50+ yearly</p>
-                            <button class="btn btn-primary" style="width: 100%;" onclick="showMessage('✅ Payment initiated!')">Subscribe</button>
+                            <h3 style="color: #00D9FF; margin-bottom: 15px;">Annual</h3>
+                            <p style="font-size: 24px; color: #00FF88; margin-bottom: 10px;"><strong>₹550</strong></p>
+                            <button class="btn btn-primary" style="width: 100%;" onclick="openPaymentModal()">Subscribe</button>
                         </div>
-                    </div>
-
-                    <h2 style="margin-top: 30px;">Payment Details:</h2>
-                    <p><strong>UPI ID:</strong> 9044621001@ibl</p>
-                    <p><strong>Auto-Renewal:</strong> Optional (you control it)</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ARTICLESHIP EXPOSURE (Final Level Only) -->
-    <div id="articleshipPage" class="page">
-        <div class="container">
-            <div class="feature-page">
-                <div class="back-button">
-                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back to Dashboard</button>
-                </div>
-                <div class="feature-header">
-                    <h1>🏢 Articleship Exposure Program</h1>
-                    <p style="color: #ccc;">For CA Final Students Only</p>
-                </div>
-
-                <div class="feature-content">
-                    <h2>Available Articleship Opportunities</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Firm Name</th>
-                                <th>Location</th>
-                                <th>Duration</th>
-                                <th>Specialization</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Big 4 Consulting</td>
-                                <td>Mumbai</td>
-                                <td>18 Months</td>
-                                <td>Audit & Assurance</td>
-                                <td><button class="btn-small" onclick="showMessage('✅ Application sent!')">Apply</button></td>
-                            </tr>
-                            <tr>
-                                <td>Tax Advisors Inc</td>
-                                <td>Delhi</td>
-                                <td>18 Months</td>
-                                <td>Direct & Indirect Tax</td>
-                                <td><button class="btn-small" onclick="showMessage('✅ Application sent!')">Apply</button></td>
-                            </tr>
-                            <tr>
-                                <td>Financial Services Ltd</td>
-                                <td>Bangalore</td>
-                                <td>18 Months</td>
-                                <td>Corporate Finance</td>
-                                <td><button class="btn-small" onclick="showMessage('✅ Application sent!')">Apply</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <h2 style="margin-top: 30px;">My Applications</h2>
-                    <div style="background: rgba(0, 217, 255, 0.05); padding: 20px; border-radius: 8px;">
-                        <p>Total Applications: <strong>2</strong></p>
-                        <p style="margin-top: 10px;">Pending: <strong>1</strong> | Accepted: <strong>1</strong></p>
                     </div>
                 </div>
             </div>
@@ -1107,32 +1055,6 @@
                         <h3>82</h3>
                         <p>Paid Subscribers</p>
                     </div>
-                    <div class="stat-card">
-                        <h3>4.5/5</h3>
-                        <p>Average Rating</p>
-                    </div>
-                </div>
-
-                <div style="margin-top: 30px;">
-                    <h2 style="color: #00D9FF; margin-bottom: 20px;">Management Tools</h2>
-                    <div class="dashboard-grid">
-                        <div class="card">
-                            <h3>📊 Analytics</h3>
-                            <p>View detailed platform analytics and metrics</p>
-                        </div>
-                        <div class="card">
-                            <h3>👥 Students</h3>
-                            <p>Manage student accounts and data</p>
-                        </div>
-                        <div class="card">
-                            <h3>💳 Payments</h3>
-                            <p>Track and verify payments</p>
-                        </div>
-                        <div class="card">
-                            <h3>📧 Communications</h3>
-                            <p>Send bulk emails and announcements</p>
-                        </div>
-                    </div>
                 </div>
 
                 <div style="text-align: center; margin-top: 40px;">
@@ -1148,24 +1070,130 @@
             <a onclick="showPage('home')">Home</a>
             <a href="mailto:CAlibrate.sanjeevni@gmail.com">Contact</a>
         </div>
-        <p>CAlibrate: Sanjeevni © 2025 | Your Lifeline to CA Success</p>
+        <p>CAlibrate: Sanjeevni © 2025</p>
         <p style="margin-top: 10px; font-size: 12px;">📧 CAlibrate.sanjeevni@gmail.com | 💳 UPI: 9044621001@ibl</p>
     </footer>
 
     <script>
-        // Global variables
+        // Complete curriculum data for all levels
+        const curriculumData = {
+            Foundation: {
+                'Accounting': [
+                    'Chapter 1: Introduction to Accounting',
+                    'Chapter 2: Journal Entries',
+                    'Chapter 3: Ledger',
+                    'Chapter 4: Trial Balance',
+                    'Chapter 5: Bank Reconciliation',
+                    'Chapter 6: Financial Statements'
+                ],
+                'Business Law': [
+                    'Chapter 1: Contract Act',
+                    'Chapter 2: Sale of Goods Act',
+                    'Chapter 3: Indian Partnership Act',
+                    'Chapter 4: Companies Act'
+                ],
+                'Business Mathematics': [
+                    'Chapter 1: Algebra',
+                    'Chapter 2: Calculus',
+                    'Chapter 3: Statistics',
+                    'Chapter 4: Probability'
+                ]
+            },
+            Intermediate: {
+                'Accounting': [
+                    'Chapter 1: Bank Reconciliation',
+                    'Chapter 2: Depreciation',
+                    'Chapter 3: Provision & Reserves',
+                    'Chapter 4: Accounts from Incomplete Records',
+                    'Chapter 5: Consolidation of Accounts',
+                    'Chapter 6: Investment Accounts'
+                ],
+                'Taxation': [
+                    'Chapter 1: Income Tax - Basic',
+                    'Chapter 2: Computation of Income',
+                    'Chapter 3: Income from Salary',
+                    'Chapter 4: Income from House Property',
+                    'Chapter 5: Income from Business',
+                    'Chapter 6: GST Fundamentals'
+                ],
+                'Cost Accounting': [
+                    'Chapter 1: Introduction to Costing',
+                    'Chapter 2: Material Costing',
+                    'Chapter 3: Labor Costing',
+                    'Chapter 4: Overhead Costing'
+                ]
+            },
+            Final: {
+                'Auditing & Assurance': [
+                    'Chapter 1: Auditing Standards',
+                    'Chapter 2: Planning & Risk Assessment',
+                    'Chapter 3: Audit Procedures',
+                    'Chapter 4: Materiality',
+                    'Chapter 5: Evidence & Testing',
+                    'Chapter 6: Audit Reporting',
+                    'Chapter 7: Special Audits'
+                ],
+                'Financial Reporting (34 Ind AS)': [
+                    'Ind AS 1: Presentation',
+                    'Ind AS 2: Inventories',
+                    'Ind AS 3: Business Combinations',
+                    'Ind AS 4: Contingent Liabilities',
+                    'Ind AS 5: Non-Current Assets',
+                    'Ind AS 6: Exploration for Minerals',
+                    'Ind AS 7: Statement of Cash Flows',
+                    'Ind AS 8: Accounting Policies',
+                    'Ind AS 9: Revenue from Contracts',
+                    'Ind AS 10: Events After Balance',
+                    'Ind AS 11: Construction Contracts',
+                    'Ind AS 12: Income Taxes',
+                    'Ind AS 13: Leases',
+                    'Ind AS 14: Regulatory Deferral',
+                    'Ind AS 15: Employment Benefits',
+                    'Ind AS 16: Property Plant Equipment',
+                    'Ind AS 17: Leases',
+                    'Ind AS 18: Revenue',
+                    'Ind AS 19: Employee Benefits',
+                    'Ind AS 20: Accounting for Govt Grants',
+                    'Ind AS 21: Foreign Currency',
+                    'Ind AS 23: Borrowing Costs',
+                    'Ind AS 24: Related Party Disclosures',
+                    'Ind AS 27: Separate FS',
+                    'Ind AS 28: Investments in Associates',
+                    'Ind AS 29: Investments in JVs',
+                    'Ind AS 32: Financial Instruments',
+                    'Ind AS 33: Earnings Per Share',
+                    'Ind AS 34: Interim FS',
+                    'Ind AS 36: Impairment',
+                    'Ind AS 37: Provisions',
+                    'Ind AS 38: Intangible Assets',
+                    'Ind AS 40: Investment Property',
+                    'Ind AS 41: Biological Assets'
+                ],
+                'Direct Taxation': [
+                    'Chapter 1: Income Tax - Advanced',
+                    'Chapter 2: Income from Various Sources',
+                    'Chapter 3: Deductions & Exemptions',
+                    'Chapter 4: Capital Gains',
+                    'Chapter 5: Set-off & Relief',
+                    'Chapter 6: Transfer Pricing',
+                    'Chapter 7: International Tax'
+                ],
+                'Corporate Law': [
+                    'Chapter 1: Companies Act Provisions',
+                    'Chapter 2: Directors & Management',
+                    'Chapter 3: Share Capital',
+                    'Chapter 4: Meetings & Resolutions',
+                    'Chapter 5: Accounts & Audits',
+                    'Chapter 6: Winding Up',
+                    'Chapter 7: Regulatory Compliance'
+                ]
+            }
+        };
+
         let timerInterval = null;
-        let timeLeft = 1500; // 25 minutes
+        let timeLeft = 1500;
         let topicsData = {};
         let currentChapter = '';
-
-        // Subjects and chapters
-        const subjectsData = {
-            financial_reporting: ['Ind AS 1 (Presentation)', 'Ind AS 2 (Inventories)', 'Ind AS 8 (Accounting Policies)', 'Ind AS 10 (Events)', 'Ind AS 34 (Segment Reporting)'],
-            taxation: ['Income Tax', 'GST', 'TCS/TDS', 'Transfer Pricing', 'International Taxation'],
-            auditing: ['Planning', 'Risk Assessment', 'Evidence', 'Reporting', 'Audit Procedures'],
-            accounting: ['Consolidation', 'Joint Arrangements', 'Associates', 'Fair Value', 'Disclosure']
-        };
 
         function showPage(pageName) {
             const pages = document.querySelectorAll('.page');
@@ -1182,21 +1210,19 @@
 
             localStorage.setItem('currentStudent', JSON.stringify({fullName, userId, level, joinDate: new Date().toLocaleDateString()}));
             showMessage('✅ Account created! Logging in...');
-            setTimeout(() => { document.getElementById('loginUserId').value = userId; handleLogin(new Event('submit')); }, 1500);
+            setTimeout(() => {
+                document.getElementById('loginUserId').value = userId;
+                handleLogin(new Event('submit'));
+            }, 1500);
         }
 
         function handleLogin(event) {
             event.preventDefault();
             const userId = document.getElementById('loginUserId').value;
             const level = document.getElementById('loginLevel').value;
-            localStorage.setItem('currentStudent', JSON.stringify({fullName: userId, userId, level, joinDate: new Date().toLocaleDateString()}));
+            localStorage.setItem('currentStudent', JSON.stringify({fullName: userId, userId, level}));
             showMessage('✅ Login successful!');
             setTimeout(() => { showPage('dashboard'); setGreeting(); }, 800);
-
-            // Show articleship option for Final level students
-            if (level === 'Final') {
-                document.querySelector('header .nav-buttons').innerHTML += '<button class="btn btn-login" onclick="showPage(\'articleship\')">🏢 Articleship</button>';
-            }
         }
 
         function handleAdminLogin(event) {
@@ -1231,19 +1257,37 @@
                 const hour = new Date().getHours();
                 let greeting = hour < 12 ? '🌅 Good Morning!' : hour < 17 ? '🌤️ Good Afternoon!' : hour < 21 ? '🌆 Good Evening!' : '🌙 Good Night!';
                 document.getElementById('greetingMessage').textContent = greeting + ' Ready to master CA?';
+                populateSubjects();
             }
         }
 
-        // Topic Tracker Functions
+        function populateSubjects() {
+            const student = JSON.parse(localStorage.getItem('currentStudent'));
+            const subjectSelect = document.getElementById('subjectSelect');
+            const level = student.level;
+            subjectSelect.innerHTML = '<option value="">Choose Subject...</option>';
+            
+            if (curriculumData[level]) {
+                Object.keys(curriculumData[level]).forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject;
+                    option.text = subject;
+                    subjectSelect.appendChild(option);
+                });
+            }
+        }
+
         function loadChapters() {
+            const student = JSON.parse(localStorage.getItem('currentStudent'));
             const subject = document.getElementById('subjectSelect').value;
             const chapterSelect = document.getElementById('chapterSelect');
             chapterSelect.innerHTML = '<option value="">Choose Chapter...</option>';
-            if (subject && subjectsData[subject]) {
-                subjectsData[subject].forEach((ch, i) => {
+            
+            if (subject && curriculumData[student.level][subject]) {
+                curriculumData[student.level][subject].forEach(chapter => {
                     const option = document.createElement('option');
-                    option.value = ch;
-                    option.text = ch;
+                    option.value = chapter;
+                    option.text = chapter;
                     chapterSelect.appendChild(option);
                 });
             }
@@ -1307,7 +1351,6 @@
             displayTopics();
         }
 
-        // Focus Timer Functions
         function updateTimer() {
             const type = document.getElementById('sessionType').value;
             if (type === 'study') timeLeft = 1500;
@@ -1331,7 +1374,6 @@
                     clearInterval(timerInterval);
                     timerInterval = null;
                     showMessage('✅ Session completed!');
-                    document.getElementById('sessionsCompleted').textContent = parseInt(document.getElementById('sessionsCompleted').textContent) + 1;
                     updateTimer();
                 }
             }, 1000);
@@ -1349,19 +1391,16 @@
             updateTimer();
         }
 
-        // Chatbot Functions
         function sendMessage() {
             const input = document.getElementById('userInput').value;
             if (!input) return;
 
-            // Add user message
             const chatMessages = document.getElementById('chatMessages');
             const userMsg = document.createElement('div');
             userMsg.className = 'user-message';
             userMsg.innerHTML = `<strong>You:</strong> ${input}`;
             chatMessages.appendChild(userMsg);
 
-            // Simulate bot response using simple AI
             setTimeout(() => {
                 const botMsg = document.createElement('div');
                 botMsg.className = 'bot-message';
@@ -1375,29 +1414,38 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function askQuestion(q) {
-            document.getElementById('userInput').value = q;
-            sendMessage();
-        }
-
         function handleKeyPress(e) {
             if (e.key === 'Enter') sendMessage();
         }
 
         function generateAIResponse(question) {
+            const lower = question.toLowerCase();
             const responses = {
-                'revenue recognition': 'Revenue is recognized under Ind AS 115 when control of goods/services is transferred to customer. Key steps: (1) Identify contract, (2) Identify performance obligations, (3) Determine transaction price, (4) Allocate price, (5) Recognize revenue when obligation satisfied.',
-                'depreciation': 'Depreciation under Ind AS 16 is the systematic allocation of asset cost over its useful life. Formula: Depreciation = (Asset Cost - Salvage Value) / Useful Life. Straight-line method spreads cost equally each year.',
-                'audit procedures': 'Common audit procedures include: Inspection, Observation, Inquiry, Confirmation, Recalculation, Reperformance, and Analytical procedures. These help auditors gather sufficient evidence.',
-                'gst': 'GST (Goods & Services Tax) calculation: GST = Taxable Amount × GST Rate. Example: If goods cost ₹1000 with 18% GST, GST = 1000 × 18% = ₹180, Total = ₹1180.'
+                'revenue': 'Revenue is recognized when control of goods/services transfers to customer',
+                'depreciation': 'Depreciation = (Asset Cost - Salvage Value) / Useful Life',
+                'audit': 'Auditing is systematic examination of financial statements',
+                'gst': 'GST is Goods and Services Tax, currently 5%-28% depending on goods/services',
+                'balance sheet': 'Balance Sheet shows assets, liabilities, and equity at a specific date',
+                'profit loss': 'P&L statement shows revenue, expenses, and net profit/loss for a period'
             };
 
-            const lower = question.toLowerCase();
             for (let key in responses) {
                 if (lower.includes(key)) return responses[key];
             }
 
-            return 'Great question! In CA, it\'s important to understand concepts deeply. This topic relates to fundamental accounting principles. Try breaking it into smaller parts: 1) Identify the core concept, 2) Understand the rules/standards, 3) Practice with examples, 4) Apply to real scenarios. Would you like me to explain any specific aspect?';
+            return 'That is a great CA concept! Break it into parts: 1) Identify core principle 2) Understand rules 3) Practice examples. Would you like me to explain further?';
+        }
+
+        function openPaymentModal() {
+            document.getElementById('paymentModal').classList.add('active');
+            // Note: In production, load QR code image from your server
+            const qrCodeImage = document.getElementById('qrCodeImage');
+            // Using a placeholder - replace with actual QR code image
+            qrCodeImage.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"%3E%3Crect fill="white" width="200" height="200"/%3E%3Ctext x="50" y="100" font-size="14" fill="black"%3EQR CODE%3C/text%3E%3C/svg%3E';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.remove('active');
         }
 
         function showMessage(text) {
@@ -1408,7 +1456,6 @@
             setTimeout(() => msg.remove(), 3000);
         }
 
-        // Initialize
         window.addEventListener('load', () => {
             const student = localStorage.getItem('currentStudent');
             const isAdmin = localStorage.getItem('isAdmin');
