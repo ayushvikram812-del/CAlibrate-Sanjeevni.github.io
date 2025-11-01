@@ -45,6 +45,7 @@
             font-weight: bold;
             color: #00D9FF;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .nav-buttons {
@@ -265,6 +266,118 @@
             font-size: 14px;
         }
 
+        .feature-page {
+            min-height: calc(100vh - 80px);
+            padding: 40px 0;
+        }
+
+        .feature-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .feature-header h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #00D9FF;
+        }
+
+        .feature-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .feature-content h2 {
+            color: #00D9FF;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .feature-content ul {
+            list-style-position: inside;
+            margin-left: 20px;
+            line-height: 2;
+        }
+
+        .about-section {
+            min-height: calc(100vh - 80px);
+            padding: 60px 0;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .about-header h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            color: #00D9FF;
+        }
+
+        .about-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .about-content h2 {
+            color: #00D9FF;
+            margin: 30px 0 15px 0;
+            font-size: 24px;
+        }
+
+        .about-content p {
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .about-content ul {
+            list-style-position: inside;
+            margin-left: 20px;
+            line-height: 2;
+            color: #ccc;
+        }
+
+        .admin-dashboard {
+            min-height: calc(100vh - 80px);
+            padding: 40px 0;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .admin-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .admin-card h3 {
+            color: #00D9FF;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .admin-card p {
+            color: #ccc;
+            line-height: 1.8;
+        }
+
         footer {
             background: rgba(10, 24, 40, 0.95);
             padding: 30px 0;
@@ -284,6 +397,7 @@
             text-decoration: none;
             margin: 0 15px;
             transition: color 0.3s ease;
+            cursor: pointer;
         }
 
         .footer-links a:hover {
@@ -312,42 +426,35 @@
             }
         }
 
+        .back-button {
+            margin-bottom: 30px;
+        }
+
+        .back-button button {
+            padding: 10px 30px;
+            font-size: 14px;
+        }
+
         @media (max-width: 768px) {
             .hero-content h1 {
                 font-size: 32px;
-            }
-
-            .hero-content p {
-                font-size: 16px;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
             }
 
             .btn-large {
                 width: 100%;
             }
 
-            .nav-buttons {
-                gap: 10px;
-            }
-
-            .btn {
-                padding: 8px 15px;
-                font-size: 12px;
-            }
-
             .form-container {
                 max-width: 90%;
             }
 
-            .dashboard-grid {
+            .dashboard-grid,
+            .admin-grid {
                 grid-template-columns: 1fr;
             }
 
-            .dashboard-header h1 {
-                font-size: 24px;
+            .about-content {
+                padding: 20px;
             }
         }
     </style>
@@ -356,10 +463,12 @@
     <!-- Header -->
     <header>
         <div class="header-content">
-            <div class="logo">🎓 CAlibrate: Sanjeevni</div>
+            <div class="logo" onclick="showPage('home')">🎓 CAlibrate: Sanjeevni</div>
             <div class="nav-buttons">
                 <button class="btn btn-login" onclick="showPage('home')">Home</button>
+                <button class="btn btn-login" onclick="showPage('about')">About</button>
                 <button class="btn btn-primary" onclick="showPage('login')">Login</button>
+                <button class="btn btn-login" onclick="showPage('adminLogin')">Admin</button>
             </div>
         </div>
     </header>
@@ -370,9 +479,7 @@
             <div class="hero-content">
                 <h1>Welcome to CAlibrate: Sanjeevni</h1>
                 <p>Your Lifeline to CA Success</p>
-                <p style="font-size: 16px; margin-bottom: 40px;">
-                    Master CA curriculum with our complete learning platform
-                </p>
+                <p style="font-size: 16px; margin-bottom: 40px;">Master CA curriculum with our complete learning platform</p>
                 <div class="hero-buttons">
                     <button class="btn btn-primary btn-large" onclick="showPage('signup')">Get Started →</button>
                     <button class="btn btn-login btn-large" onclick="showPage('login')">Login</button>
@@ -452,6 +559,30 @@
         </div>
     </div>
 
+    <!-- Admin Login Page -->
+    <div id="adminLoginPage" class="page">
+        <div class="form-container">
+            <h2>Admin Login</h2>
+            <form onsubmit="handleAdminLogin(event)">
+                <div class="form-group">
+                    <label for="adminEmail">Admin Email *</label>
+                    <input type="email" id="adminEmail" placeholder="ayushvikram812@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Admin Password *</label>
+                    <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="showPage('home')">Back</button>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+            <p style="text-align: center; margin-top: 20px; color: #ccc; font-size: 12px;">
+                Demo: Email: ayushvikram812@gmail.com | Password: Admin@123
+            </p>
+        </div>
+    </div>
+
     <!-- Dashboard Page -->
     <div id="dashboardPage" class="page">
         <div class="container">
@@ -462,27 +593,27 @@
                 </div>
 
                 <div class="dashboard-grid">
-                    <div class="card" onclick="showFeature('topics')">
+                    <div class="card" onclick="showPage('topics')">
                         <h3>📚 Topic Tracker</h3>
                         <p>Track topics and questions chapter-wise. Get 30-day free trial!</p>
                     </div>
-                    <div class="card" onclick="showFeature('timer')">
+                    <div class="card" onclick="showPage('timer')">
                         <h3>⏱️ Focus Timer</h3>
                         <p>25-minute Pomodoro study sessions to boost productivity</p>
                     </div>
-                    <div class="card" onclick="showFeature('groups')">
+                    <div class="card" onclick="showPage('groups')">
                         <h3>👥 Study Groups</h3>
                         <p>Join study groups and collaborate with fellow CA students</p>
                     </div>
-                    <div class="card" onclick="showFeature('chatbot')">
+                    <div class="card" onclick="showPage('chatbot')">
                         <h3>🤖 Sanjeevni Chatbot</h3>
                         <p>Ask questions about CA concepts and get instant answers</p>
                     </div>
-                    <div class="card" onclick="showFeature('badges')">
+                    <div class="card" onclick="showPage('badges')">
                         <h3>🏅 Badges & Achievements</h3>
                         <p>Earn 50+ badges for your progress and maintain streaks</p>
                     </div>
-                    <div class="card" onclick="showFeature('payment')">
+                    <div class="card" onclick="showPage('payment')">
                         <h3>💳 Subscription Plans</h3>
                         <p>₹50/month, ₹149/3M, ₹299/6M, ₹550/12M - Affordable options</p>
                     </div>
@@ -495,12 +626,421 @@
         </div>
     </div>
 
+    <!-- Topic Tracker Page -->
+    <div id="topicsPage" class="page">
+        <div class="container">
+            <div class="feature-page">
+                <div class="back-button">
+                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back to Dashboard</button>
+                </div>
+                <div class="feature-header">
+                    <h1>📚 Topic Tracker</h1>
+                    <p style="color: #ccc;">Master your CA curriculum chapter by chapter</p>
+                </div>
+                <div class="feature-content">
+                    <h2>What is Topic Tracker?</h2>
+                    <p>The Topic Tracker is a powerful tool designed to help CA students track their progress through each chapter. Mark topics as completed, pending, or under review.</p>
+                    
+                    <h2>Key Features:</h2>
+                    <ul>
+                        <li>✅ Chapter-wise topic management</li>
+                        <li>✅ Track question and illustration numbers</li>
+                        <li>✅ Classification system (Most Important, Important, Good for Reading, Okay)</li>
+                        <li>✅ Revision tracking</li>
+                        <li>✅ Progress statistics</li>
+                        <li>✅ Auto-save functionality</li>
+                        <li>✅ Export to CSV</li>
+                    </ul>
+
+                    <h2>How to Use:</h2>
+                    <p>1. Select your CA level and chapter</p>
+                    <p>2. Add topics with question/illustration numbers</p>
+                    <p>3. Classify each topic by importance</p>
+                    <p>4. Mark for revision as needed</p>
+                    <p>5. Track your progress in real-time</p>
+
+                    <h2>Supported Levels:</h2>
+                    <ul>
+                        <li>Foundation Level - Complete foundation curriculum</li>
+                        <li>Intermediate Level - Advanced topics and case studies</li>
+                        <li>Final Level - Complex scenarios and applications</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Focus Timer Page -->
+    <div id="timerPage" class="page">
+        <div class="container">
+            <div class="feature-page">
+                <div class="back-button">
+                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back to Dashboard</button>
+                </div>
+                <div class="feature-header">
+                    <h1>⏱️ Focus Timer</h1>
+                    <p style="color: #ccc;">Boost productivity with Pomodoro technique</p>
+                </div>
+                <div class="feature-content">
+                    <h2>What is Focus Timer?</h2>
+                    <p>The Focus Timer implements the famous Pomodoro Technique to help you study in focused intervals with breaks in between.</p>
+                    
+                    <h2>How Pomodoro Works:</h2>
+                    <ul>
+                        <li>✅ Study for 25 minutes (1 Pomodoro)</li>
+                        <li>✅ Take a 5-minute break</li>
+                        <li>✅ After 4 Pomodoros, take a 15-minute break</li>
+                        <li>✅ Repeat the cycle</li>
+                    </ul>
+
+                    <h2>Benefits:</h2>
+                    <ul>
+                        <li>✅ Improved focus and concentration</li>
+                        <li>✅ Reduced mental fatigue</li>
+                        <li>✅ Better time management</li>
+                        <li>✅ Increased productivity</li>
+                        <li>✅ Built-in break reminders</li>
+                    </ul>
+
+                    <h2>Timer Features:</h2>
+                    <ul>
+                        <li>✅ Customizable time intervals</li>
+                        <li>✅ Audio notifications</li>
+                        <li>✅ Session tracking</li>
+                        <li>✅ Daily statistics</li>
+                        <li>✅ Pause/Resume functionality</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Study Groups Page -->
+    <div id="groupsPage" class="page">
+        <div class="container">
+            <div class="feature-page">
+                <div class="back-button">
+                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back to Dashboard</button>
+                </div>
+                <div class="feature-header">
+                    <h1>👥 Study Groups</h1>
+                    <p style="color: #ccc;">Collaborate and learn with fellow CA students</p>
+                </div>
+                <div class="feature-content">
+                    <h2>About Study Groups</h2>
+                    <p>Study Groups are dedicated spaces where CA students can connect, discuss topics, share resources, and help each other master the curriculum.</p>
+                    
+                    <h2>Group Categories:</h2>
+                    <ul>
+                        <li>✅ Chapter-specific groups (one for each subject)</li>
+                        <li>✅ Topic-focused discussion groups</li>
+                        <li>✅ Doubt resolution groups</li>
+                        <li>✅ Peer mentoring circles</li>
+                        <li>✅ Success story communities</li>
+                    </ul>
+
+                    <h2>Group Features:</h2>
+                    <ul>
+                        <li>✅ Real-time discussion threads</li>
+                        <li>✅ Resource sharing (PDFs, notes, links)</li>
+                        <li>✅ Member profiles and contributions</li>
+                        <li>✅ Moderation and guidelines</li>
+                        <li>✅ Group activity tracking</li>
+                        <li>✅ Problem-solving collaborations</li>
+                    </ul>
+
+                    <h2>Benefits:</h2>
+                    <ul>
+                        <li>✅ Clarify doubts with peers</li>
+                        <li>✅ Share learning strategies</li>
+                        <li>✅ Build professional network</li>
+                        <li>✅ Motivation and support</li>
+                        <li>✅ Collaborative learning</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Page -->
+    <div id="chatbotPage" class="page">
+        <div class="container">
+            <div class="feature-page">
+                <div class="back-button">
+                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back to Dashboard</button>
+                </div>
+                <div class="feature-header">
+                    <h1>🤖 Sanjeevni Chatbot</h1>
+                    <p style="color: #ccc;">Your 24/7 AI tutor for CA concepts</p>
+                </div>
+                <div class="feature-content">
+                    <h2>Meet Sanjeevni</h2>
+                    <p>Sanjeevni is an AI-powered chatbot trained on CA curriculum to answer your questions instantly. Available 24/7, Sanjeevni helps clarify concepts, solve problems, and guide your studies.</p>
+                    
+                    <h2>What Sanjeevni Can Help With:</h2>
+                    <ul>
+                        <li>✅ Concept clarification (Ind AS, Taxation, Auditing)</li>
+                        <li>✅ Worked-out problem solutions</li>
+                        <li>✅ Journal entry treatments</li>
+                        <li>✅ Tax calculation guidance</li>
+                        <li>✅ Audit procedures explanation</li>
+                        <li>✅ Case study analysis</li>
+                        <li>✅ Exam preparation tips</li>
+                    </ul>
+
+                    <h2>Key Features:</h2>
+                    <ul>
+                        <li>✅ Instant responses (no waiting)</li>
+                        <li>✅ Simple language explanations</li>
+                        <li>✅ Real-world examples</li>
+                        <li>✅ Common mistakes highlighted</li>
+                        <li>✅ Practice problems included</li>
+                        <li>✅ Rating system for improvements</li>
+                        <li>✅ Follow-up question suggestions</li>
+                    </ul>
+
+                    <h2>How to Ask Questions:</h2>
+                    <p>1. Type your question in simple English</p>
+                    <p>2. Hit send or press Enter</p>
+                    <p>3. Receive instant answer from Sanjeevni</p>
+                    <p>4. Rate if the answer was helpful</p>
+                    <p>5. Ask follow-up questions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Badges Page -->
+    <div id="badgesPage" class="page">
+        <div class="container">
+            <div class="feature-page">
+                <div class="back-button">
+                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back to Dashboard</button>
+                </div>
+                <div class="feature-header">
+                    <h1>🏅 Badges & Achievements</h1>
+                    <p style="color: #ccc;">Unlock 50+ badges and celebrate your progress</p>
+                </div>
+                <div class="feature-content">
+                    <h2>About Achievement Badges</h2>
+                    <p>Badges are earned by completing specific milestones and maintaining consistency in your studies. Showcase your achievements and boost your motivation!</p>
+                    
+                    <h2>Badge Categories:</h2>
+                    <ul>
+                        <li>✅ Consistency Badges (Daily streaks, Hot Streaks)</li>
+                        <li>✅ Completion Badges (Chapter Master, Level Complete)</li>
+                        <li>✅ Focus Badges (Focus Master, 1000 Hour Club)</li>
+                        <li>✅ Collaboration Badges (Community Helper, Study Group Star)</li>
+                        <li>✅ Performance Badges (Quiz Champion, Problem Solver)</li>
+                        <li>✅ Special Badges (Referral King, Mentor, Expert)</li>
+                    </ul>
+
+                    <h2>Sample Badges:</h2>
+                    <ul>
+                        <li>✅ 🔥 Hot Streak - 7 consecutive days of studying</li>
+                        <li>✅ ✅ Chapter Master - Complete entire chapter</li>
+                        <li>✅ ⏱️ Focus Master - 100 focus sessions completed</li>
+                        <li>✅ 💬 Community Helper - Help 10 peers in study groups</li>
+                        <li>✅ 🎓 Level Complete - Finish entire CA level</li>
+                    </ul>
+
+                    <h2>Benefits of Badges:</h2>
+                    <ul>
+                        <li>✅ Motivate consistent studying</li>
+                        <li>✅ Track personal milestones</li>
+                        <li>✅ Show achievements to peers</li>
+                        <li>✅ Unlock exclusive features</li>
+                        <li>✅ Build your portfolio</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Page -->
+    <div id="paymentPage" class="page">
+        <div class="container">
+            <div class="feature-page">
+                <div class="back-button">
+                    <button class="btn btn-login" onclick="showPage('dashboard')">← Back to Dashboard</button>
+                </div>
+                <div class="feature-header">
+                    <h1>💳 Subscription Plans</h1>
+                    <p style="color: #ccc;">Choose the perfect plan for your CA journey</p>
+                </div>
+                <div class="feature-content">
+                    <h2>30-Day Free Trial</h2>
+                    <p>All new students get a 30-day free trial with full access to all features. No credit card required! No strings attached!</p>
+                    
+                    <h2>Subscription Plans:</h2>
+                    <ul>
+                        <li>✅ <strong>Monthly Plan: ₹50/month</strong> - Best for trying out</li>
+                        <li>✅ <strong>3-Month Plan: ₹149 (₹50/month)</strong> - Popular choice</li>
+                        <li>✅ <strong>6-Month Plan: ₹299 (₹50/month)</strong> - Better value</li>
+                        <li>✅ <strong>Annual Plan: ₹550 (₹46/month)</strong> - Best savings</li>
+                    </ul>
+
+                    <h2>What's Included in Every Plan:</h2>
+                    <ul>
+                        <li>✅ Unlimited Topic Tracker access</li>
+                        <li>✅ Unlimited Focus Timer sessions</li>
+                        <li>✅ Study group participation</li>
+                        <li>✅ Sanjeevni AI chatbot (24/7)</li>
+                        <li>✅ 50+ achievement badges</li>
+                        <li>✅ Leaderboards and rankings</li>
+                        <li>✅ Priority support</li>
+                        <li>✅ Monthly progress reports</li>
+                    </ul>
+
+                    <h2>Payment Details:</h2>
+                    <p><strong>UPI ID:</strong> 9044621001@ibl</p>
+                    <p><strong>Accepted via:</strong> Google Pay, PhonePe, Paytm, Any UPI app</p>
+                    <p><strong>Auto-Renewal:</strong> Optional (you control it)</p>
+
+                    <h2>Special Offers:</h2>
+                    <ul>
+                        <li>✅ Referral Bonus - Get ₹50 for each friend you refer</li>
+                        <li>✅ Group Discounts - 10% off for groups of 5+</li>
+                        <li>✅ Seasonal Sales - Watch for special promotions</li>
+                        <li>✅ Early Bird Pricing - First 100 subscribers get lifetime discount</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Page -->
+    <div id="aboutPage" class="page">
+        <div class="container">
+            <div class="about-section">
+                <div class="about-header">
+                    <h1>About CAlibrate: Sanjeevni</h1>
+                    <p style="color: #ccc;">Your Partner in CA Success</p>
+                </div>
+
+                <div class="about-content">
+                    <h2>Our Mission</h2>
+                    <p>CAlibrate: Sanjeevni is dedicated to revolutionizing CA education by providing a comprehensive, intelligent, and user-friendly learning platform. We believe that with the right tools and support, every CA student can excel.</p>
+
+                    <h2>Who We Are</h2>
+                    <p>Founded by Ayush Vikram in 2025, CAlibrate: Sanjeevni was born from the personal struggles of CA students. We understand the challenges:</p>
+                    <ul>
+                        <li>Difficulty tracking progress across 100+ topics per level</li>
+                        <li>Need for instant doubt resolution</li>
+                        <li>Lack of peer support and collaboration</li>
+                        <li>Limited motivation tools</li>
+                        <li>No comprehensive progress tracking</li>
+                    </ul>
+
+                    <h2>What We Offer</h2>
+                    <p>CAlibrate: Sanjeevni combines AI technology, gamification, and community support to create a holistic learning ecosystem:</p>
+                    <ul>
+                        <li>✅ Topic Tracker - Master your curriculum systematically</li>
+                        <li>✅ Sanjeevni AI - Get instant answers to any question</li>
+                        <li>✅ Focus Timer - Study efficiently with Pomodoro technique</li>
+                        <li>✅ Study Groups - Learn with peers and build network</li>
+                        <li>✅ Achievement Badges - Stay motivated with gamification</li>
+                        <li>✅ Progress Analytics - Track your improvement</li>
+                    </ul>
+
+                    <h2>Why Choose CAlibrate?</h2>
+                    <ul>
+                        <li>✅ <strong>Affordable:</strong> Starting at just ₹50/month</li>
+                        <li>✅ <strong>Comprehensive:</strong> All CA levels covered (Foundation to Final)</li>
+                        <li>✅ <strong>AI-Powered:</strong> Smart chatbot for 24/7 support</li>
+                        <li>✅ <strong>Community-Driven:</strong> Learn with thousands of CA students</li>
+                        <li>✅ <strong>Progress-Focused:</strong> Track and celebrate milestones</li>
+                        <li>✅ <strong>User-Friendly:</strong> Beautiful, intuitive interface</li>
+                    </ul>
+
+                    <h2>Our Numbers</h2>
+                    <ul>
+                        <li>✅ 34 Ind AS Standards Covered</li>
+                        <li>✅ 50+ Achievement Badges</li>
+                        <li>✅ 24/7 AI Chatbot Support</li>
+                        <li>✅ 3 CA Levels Supported</li>
+                        <li>✅ Unlimited Study Groups</li>
+                        <li>✅ 30-Day Free Trial</li>
+                    </ul>
+
+                    <h2>Founder Story</h2>
+                    <p><strong>Ayush Vikram</strong> is a CA student who struggled with organizing his studies across multiple chapters and topics. Frustrated by the lack of comprehensive tools available, he decided to build CAlibrate: Sanjeevni to solve the problems he faced and help thousands of CA students succeed.</p>
+
+                    <h2>Our Vision</h2>
+                    <p>We envision CAlibrate: Sanjeevni becoming the #1 trusted learning platform for CA students across India. By combining technology, community, and personalized learning, we aim to make CA education more accessible, engaging, and effective for everyone.</p>
+
+                    <h2>Get In Touch</h2>
+                    <p><strong>Email:</strong> CAlibrate.sanjeevni@gmail.com</p>
+                    <p><strong>UPI:</strong> 9044621001@ibl</p>
+                    <p><strong>LinkedIn:</strong> Connect with Ayush Vikram</p>
+
+                    <h2>Thank You</h2>
+                    <p>Thank you for choosing CAlibrate: Sanjeevni. We're committed to your success and will continuously improve our platform based on your feedback.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboardPage" class="page">
+        <div class="container">
+            <div class="admin-dashboard">
+                <div class="dashboard-header">
+                    <h1>Admin Dashboard</h1>
+                    <p style="color: #ccc; margin-bottom: 30px;">Manage your CAlibrate: Sanjeevni platform</p>
+                </div>
+
+                <div class="admin-grid">
+                    <div class="admin-card">
+                        <h3>📊 Analytics</h3>
+                        <p>View comprehensive platform analytics including user growth, engagement metrics, revenue tracking, and performance indicators.</p>
+                        <p style="margin-top: 15px; color: #00D9FF;">Total Users: 0</p>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>👥 Student Management</h3>
+                        <p>Manage all student accounts, view profiles, track activity, handle subscriptions, and provide support to users.</p>
+                        <p style="margin-top: 15px; color: #00D9FF;">Active Students: 0</p>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>💳 Payment Processing</h3>
+                        <p>Verify payments, track revenue, manage subscriptions, process refunds, and maintain payment records for compliance.</p>
+                        <p style="margin-top: 15px; color: #00D9FF;">Revenue: ₹0</p>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>📧 Communications</h3>
+                        <p>Send bulk emails, announcements, reminders, and newsletters to students. Manage email templates and campaigns.</p>
+                        <p style="margin-top: 15px; color: #00D9FF;">Email Templates: 10+</p>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>📚 Content Management</h3>
+                        <p>Update curriculum, manage chapters, add resources, edit content, and maintain the knowledge base.</p>
+                        <p style="margin-top: 15px; color: #00D9FF;">Chapters: 200+</p>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>🤖 Chatbot Management</h3>
+                        <p>Monitor chatbot performance, improve answers, review flagged responses, and train the AI system.</p>
+                        <p style="margin-top: 15px; color: #00D9FF;">Satisfaction: 4.5/5</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <button class="btn btn-login" onclick="handleAdminLogout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <div class="footer-links">
-            <a href="#" onclick="showPage('home'); return false;">Home</a>
+            <a onclick="showPage('home')">Home</a>
+            <a onclick="showPage('about')">About</a>
             <a href="mailto:CAlibrate.sanjeevni@gmail.com">Contact</a>
-            <a href="#">About</a>
         </div>
         <p>CAlibrate: Sanjeevni © 2025 | Your Lifeline to CA Success</p>
         <p style="margin-top: 10px; font-size: 12px;">📧 Email: CAlibrate.sanjeevni@gmail.com | 💳 UPI: 9044621001@ibl</p>
@@ -512,22 +1052,31 @@
             const pages = document.querySelectorAll('.page');
             pages.forEach(page => page.classList.remove('active'));
             
-            if (pageName === 'home') {
-                document.getElementById('homePage').classList.add('active');
-            } else if (pageName === 'signup') {
-                document.getElementById('signupPage').classList.add('active');
-            } else if (pageName === 'login') {
-                document.getElementById('loginPage').classList.add('active');
-            } else if (pageName === 'dashboard') {
-                document.getElementById('dashboardPage').classList.add('active');
-                setGreeting();
+            const pageMap = {
+                'home': 'homePage',
+                'signup': 'signupPage',
+                'login': 'loginPage',
+                'adminLogin': 'adminLoginPage',
+                'dashboard': 'dashboardPage',
+                'topics': 'topicsPage',
+                'timer': 'timerPage',
+                'groups': 'groupsPage',
+                'chatbot': 'chatbotPage',
+                'badges': 'badgesPage',
+                'payment': 'paymentPage',
+                'about': 'aboutPage',
+                'adminDashboard': 'adminDashboardPage'
+            };
+            
+            if (pageMap[pageName]) {
+                document.getElementById(pageMap[pageName]).classList.add('active');
             }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Handle Sign Up
         function handleSignup(event) {
             event.preventDefault();
-            
             const fullName = document.getElementById('fullName').value.trim();
             const email = document.getElementById('email').value.trim();
             const userId = document.getElementById('userId').value.trim();
@@ -539,24 +1088,10 @@
                 return;
             }
 
-            const student = {
-                fullName: fullName,
-                email: email,
-                userId: userId,
-                password: password,
-                level: level,
-                joinDate: new Date().toLocaleDateString(),
-                trialEndDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString()
-            };
-
+            const student = { fullName, email, userId, password, level, joinDate: new Date().toLocaleDateString() };
             localStorage.setItem('currentStudent', JSON.stringify(student));
-            
-            let students = JSON.parse(localStorage.getItem('students')) || [];
-            students.push(student);
-            localStorage.setItem('students', JSON.stringify(students));
 
             showMessage('✅ Account created! Logging in...');
-            
             setTimeout(() => {
                 document.getElementById('loginUserId').value = userId;
                 document.getElementById('loginPassword').value = password;
@@ -568,7 +1103,6 @@
         // Handle Login
         function handleLogin(event) {
             event.preventDefault();
-            
             const userId = document.getElementById('loginUserId').value.trim();
             const password = document.getElementById('loginPassword').value;
             const level = document.getElementById('loginLevel').value;
@@ -579,7 +1113,7 @@
             }
 
             const student = {
-                fullName: userId.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').trim(),
+                fullName: userId.replace(/_/g, ' '),
                 email: 'student@email.com',
                 userId: userId,
                 password: password,
@@ -589,29 +1123,36 @@
 
             localStorage.setItem('currentStudent', JSON.stringify(student));
             showMessage('✅ Login successful!');
-            
-            setTimeout(() => {
-                showPage('dashboard');
-            }, 800);
+            setTimeout(() => { showPage('dashboard'); }, 800);
+        }
+
+        // Handle Admin Login
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            const adminEmail = document.getElementById('adminEmail').value.trim();
+            const adminPassword = document.getElementById('adminPassword').value;
+
+            if (adminEmail === 'ayushvikram812@gmail.com' && adminPassword === 'Admin@123') {
+                localStorage.setItem('isAdmin', 'true');
+                showMessage('✅ Admin login successful!');
+                setTimeout(() => { showPage('adminDashboard'); }, 800);
+            } else {
+                showMessage('❌ Invalid admin credentials');
+            }
         }
 
         // Handle Logout
         function handleLogout() {
             localStorage.removeItem('currentStudent');
             showMessage('👋 Logged out successfully');
-            
-            document.getElementById('fullName').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('userId').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('level').value = '';
-            document.getElementById('loginUserId').value = '';
-            document.getElementById('loginPassword').value = '';
-            document.getElementById('loginLevel').value = '';
-            
-            setTimeout(() => {
-                showPage('home');
-            }, 800);
+            setTimeout(() => { showPage('home'); }, 800);
+        }
+
+        // Handle Admin Logout
+        function handleAdminLogout() {
+            localStorage.removeItem('isAdmin');
+            showMessage('👋 Admin logged out successfully');
+            setTimeout(() => { showPage('home'); }, 800);
         }
 
         // Set Greeting
@@ -619,63 +1160,33 @@
             const student = JSON.parse(localStorage.getItem('currentStudent'));
             if (student) {
                 document.getElementById('studentName').textContent = student.fullName;
-                
                 const hour = new Date().getHours();
                 let greeting = '';
-                
-                if (hour < 12) {
-                    greeting = '🌅 Good Morning!';
-                } else if (hour < 17) {
-                    greeting = '🌤️ Good Afternoon!';
-                } else if (hour < 21) {
-                    greeting = '🌆 Good Evening!';
-                } else {
-                    greeting = '🌙 Good Night!';
-                }
-                
+                if (hour < 12) greeting = '🌅 Good Morning!';
+                else if (hour < 17) greeting = '🌤️ Good Afternoon!';
+                else if (hour < 21) greeting = '🌆 Good Evening!';
+                else greeting = '🌙 Good Night!';
                 document.getElementById('greetingMessage').textContent = greeting + ' Ready to master CA?';
             }
         }
 
-        // Show Feature Messages
-        function showFeature(feature) {
-            const messages = {
-                topics: '📚 Topic Tracker\n\nTrack all topics & questions from your CA books.\n30-day free trial includes full access!\n\nFeatures:\n• Chapter-wise tracking\n• Question numbering\n• Classification system\n• Revision tracking',
-                
-                timer: '⏱️ Focus Timer\n\nStart a 25-minute Pomodoro session.\nBoost your productivity!\n\nFeatures:\n• Customizable time\n• Auto-notifications\n• Session tracking\n• Statistics',
-                
-                groups: '👥 Study Groups\n\nJoin or create study groups.\nCollaborate with fellow CA students!\n\nFeatures:\n• Chapter-based groups\n• Discussion threads\n• Resource sharing\n• Member stats',
-                
-                chatbot: '🤖 Sanjeevni Chatbot\n\nHello! I\'m your AI tutor.\nAsk me anything about CA concepts!\n\nFeatures:\n• Real-time answers\n• Example problems\n• Concept clarification\n• Study tips',
-                
-                badges: '🏅 Badges & Achievements\n\nYou have earned 5 badges!\nKeep learning to unlock more!\n\nBadges:\n• Hot Streak 🔥\n• Chapter Master ✅\n• Focus Master ⏱️\n• Community Helper 💬\n• And 46+ more!',
-                
-                payment: '💳 Subscription Plans\n\n30-Day Free Trial\n\nThen choose:\n• ₹50/month\n• ₹149/3 months\n• ₹299/6 months\n• ₹550/12 months\n\nUPI: 9044621001@ibl'
-            };
-            
-            const message = messages[feature] || 'Feature loading...';
-            alert(message);
-        }
-
-        // Show Message Notification
+        // Show Message
         function showMessage(text) {
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message';
             messageDiv.textContent = text;
             document.body.appendChild(messageDiv);
-            
-            setTimeout(() => {
-                messageDiv.remove();
-            }, 3000);
+            setTimeout(() => { messageDiv.remove(); }, 3000);
         }
 
-        // Initialize on load
+        // Initialize
         window.addEventListener('load', function() {
             const student = localStorage.getItem('currentStudent');
-            if (student) {
+            const isAdmin = localStorage.getItem('isAdmin');
+            if (isAdmin) {
+                showPage('adminDashboard');
+            } else if (student) {
                 showPage('dashboard');
-            } else {
-                showPage('home');
             }
         });
     </script>
