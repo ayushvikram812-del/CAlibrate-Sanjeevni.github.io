@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAlibrate: Sanjeevni - Your Lifeline to CA Success</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">🎓 CAlibrate: Sanjeevni</div>
+            <div class="nav-buttons">
+                <button class="btn btn-login" onclick="showPage('home')">Home</button>
+                <button class="btn btn-primary" onclick="showPage('login')">Login</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <div id="homePage" class="page active">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Welcome to CAlibrate: Sanjeevni</h1>
+                <p>Your Lifeline to CA Success</p>
+                <p style="font-size: 16px; margin-bottom: 40px;">
+                    Master CA curriculum with our complete learning platform
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-large" onclick="showPage('signup')">Get Started →</button>
+                    <button class="btn btn-login btn-large" onclick="showPage('login')">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Page -->
+    <div id="signupPage" class="page">
+        <div class="form-container">
+            <h2>Create Your Account</h2>
+            <form onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="userId">Create User ID *</label>
+                    <input type="text" id="userId" placeholder="e.g., ca_ravi123" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <div class="form-group">
+                    <label for="level">CA Level *</label>
+                    <select id="level" required>
+                        <option value="">Select Level</option>
+                        <option value="Foundation">Foundation</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Final">Final</option>
+                    </select>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="showPage('home')">Back</button>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="page">
+        <div class="form-container">
+            <h2>Welcome Back</h2>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginUserId">User ID or Email *</label>
+                    <input type="text" id="loginUserId" placeholder="Enter user ID or email" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password *</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginLevel">CA Level *</label>
+                    <select id="loginLevel" required>
+                        <option value="">Select Level</option>
+                        <option value="Foundation">Foundation</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Final">Final</option>
+                    </select>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="showPage('home')">Back</button>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+            <p style="text-align: center; margin-top: 20px; color: #ccc;">
+                Don't have an account? <a href="#" onclick="showPage('signup'); return false;" style="color: #00D9FF; cursor: pointer;">Sign Up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboardPage" class="page">
+        <div class="container">
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <h1>Welcome, <span id="studentName">Student</span>! 👋</h1>
+                    <p id="greetingMessage" style="color: #ccc; margin-bottom: 30px;"></p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card" onclick="showFeature('topics')">
+                        <h3>📚 Topic Tracker</h3>
+                        <p>Track topics and questions chapter-wise. Get 30-day free trial!</p>
+                    </div>
+                    <div class="card" onclick="showFeature('timer')">
+                        <h3>⏱️ Focus Timer</h3>
+                        <p>25-minute Pomodoro study sessions to boost productivity</p>
+                    </div>
+                    <div class="card" onclick="showFeature('groups')">
+                        <h3>👥 Study Groups</h3>
+                        <p>Join study groups and collaborate with fellow CA students</p>
+                    </div>
+                    <div class="card" onclick="showFeature('chatbot')">
+                        <h3>🤖 Sanjeevni Chatbot</h3>
+                        <p>Ask questions about CA concepts and get instant answers</p>
+                    </div>
+                    <div class="card" onclick="showFeature('badges')">
+                        <h3>🏅 Badges & Achievements</h3>
+                        <p>Earn 50+ badges for your progress and maintain streaks</p>
+                    </div>
+                    <div class="card" onclick="showFeature('payment')">
+                        <h3>💳 Subscription Plans</h3>
+                        <p>₹50/month, ₹149/3M, ₹299/6M, ₹550/12M - Affordable options</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <button class="btn btn-login" onclick="handleLogout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="#" onclick="showPage('home'); return false;">Home</a>
+            <a href="mailto:CAlibrate.sanjeevni@gmail.com">Contact</a>
+            <a href="#">About</a>
+        </div>
+        <p>CAlibrate: Sanjeevni © 2025 | Your Lifeline to CA Success</p>
+        <p style="margin-top: 10px; font-size: 12px;">📧 Email: CAlibrate.sanjeevni@gmail.com | 💳 UPI: 9044621001@ibl</p>
+    </footer>
+
+    <!-- Script Link -->
+    <script src="script.js"></script>
+</body>
+</html>
